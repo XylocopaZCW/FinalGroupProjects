@@ -1,139 +1,29 @@
-# Final Group Projects (Java) - Server
+<center><h1>Final Group Projects (Java) - Server</h1></center>
 
-* **Objective** - to create an implementation of a small web service
-* **Purpose** - to demonstrate the construction of a full-stacked web-application
+<p align="center">
+  <img src="https://media.discordapp.net/attachments/1184955274876960920/1191943838315577434/DALLE_2024-01-02_22.19.02_-_Create_a_logo_featuring_a_cartoon_dinosaur_with_specific_characteristics_to_resemble_the_dinosaur_depicted_in_the_provided_image._The_dinosaur_should_.png?ex=65a74734&is=6594d234&hm=0fd7003a6414e27f54d8b404371c2699d3b71a6910172b667af969eb6e771f4c&=&format=webp&quality=lossless&width=350&height=350"/>
+</p>
 
-## Developmental Notes
-### Minimum Tech Stack
-* **Wireframe** - Mockflow
-* **Frontend** - Angular / React / VanillaJS
-* **Business Logic** - Java / REST / JPA
-* **Data Layer** - MySQL / Postgres
-* **Cloud** - Heroku/AWS/Google or `zipcode.rocks` hosting
+### **About**
 
-### Installation
+XylocopaChat (YeeChat) is a web application that allows users to create an account, create a new workspace, view default and accessible channels where they will see messages live as they are received, and even send direct messages to other users. There will also be admins, who will be able to create new channels and remove users from channels. 
 
-Use Spring Initializr (or JHipster) to create an starting point for your application
-
-
-## Project Topics
-
-### Document Editor and Library (google doc clone)
-
-#### User Stories to Fulfill
-* As a user, (not logged in) I
-    * can view list of all documents
-    * can view a specific document 
-* As a user, (logged in) I
-    * can create new documents
-        * A document can consist of images and text
-	* can view list of all documents
-	* uses a well-known JS text editor (like Monaco?)
-    * can view documents filtered by a search term
-    * can download/upload docs to/from "desktop"
+Our MVP allows users to create an account, create a new workspace, view default and accessible channels where they will see messages live as they are received, and send direct messages to other users. There will also be admins, who will be able to create new channels and remove users from channels.
 
 <hr>
 
+### **Future Plans**
 
-### Video Library Application (netflix clone)
-
-#### User Stories to Fulfill  
-* As a user, (not logged in) I
-    * can view list of all videos
-* As a user, (logged in) I
-    * can upload new videos
-    * can view list of all videos
-    * can post simple text-comments on a video
-
+TBD
 
 <hr>
 
-### Work Communication (slack clone)
+### **Tech Stack**
 
-#### User Stories
-* As a client (not logged in) I can register as a new user
-* As a user, I
-  * can create a new workspace
-  * can view default channels
-  * can view accessible channels
-  * can direct message other users
-  * can view messages live as they are received
-* As an admin, I am a user who can
-  * create new channels
-  * remove users from channels
+YeeChat* will operate on a Spring Boot backend, React frontend, and Postgres database. Our app will run on an AWS cloud server.
 
 <hr>
 
-### News Site (NPR/CNN/NYTimes clone)
+### **Dev Team**
 
-#### User Stories
-* As a client (not logged in) I can see news headlines
- * and # of likes about news stories
-* As a user, (logged in) I
-  * search for news of interest
-  * create bookmarks for myself
-  * add a like to a news story
-  * create comments on news stories
-   that other logged in users can see.
-    
-<hr> 
-
-### Money Management Application (like mint)
-
-#### User Stories to Fulfill  
-* As a user, (not logged in) I
-	* can create new accounts
-* As a user, (logged in) I
-	* deposit money to each account
-	* withdraw money from each account
-	* transfer money to and from any 2 accounts
-
-<hr> 
-
-### Blog Application (blogger clone)
-
-#### User Stories to Fulfill
-* As a user, (not logged in) I
-    * can view list of all blog posts
-    * can view blog posts filtered by blog-tag
-* As a user, (logged in) I
-    * can create new blog posts
-        * A blog post can consist of images and text
-	* can view list of all blog posts
-    * can view blog posts filtered by blog-tag
-	* can view new blog posts upon refreshing the DOM
-
-<hr>
-
-### Twitter Application (twitter clone)
-
-#### User Stories to Fulfill  
-* As a user, (not logged in) I
-    * can view list of all tweets from all users
-* As a user, (logged in) I
-    * can post a new tweet (limited to 255 chars)
-    * can view list of all tweets
-    * can see tweets by a specific user
-    * can use "@" notation to direct a tweet to another user
-    * can add images to tweets
-    * all new tweets appear in timeline as they come in
-    * can search by "#" hashtags
-
-
-<hr>
-
-### TCP Application
-
-#### User Stories to Fulfill  
-* As a user, (logged in) I
-    * can send messages to a _peer_.
-	* can view default channels
-	* can view all accessible channels
-	* can view messages live as they are received
-
-<hr>
-
-
-### Hosting
-
-see [https://github.com/ZipCodeCore/FinalProjects-Hosting](https://github.com/ZipCodeCore/FinalProjects-Hosting)
+Nathan Guardado, Louie Casula, Gowri Palaniswamy
