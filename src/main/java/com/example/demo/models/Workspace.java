@@ -15,9 +15,9 @@ public class Workspace {
 
     @Column(name = "name", nullable = false, unique = true)
     private String name;
-    @Column(name = "accessible", nullable = false, unique = true)
+    @Column(name = "accessible", nullable = false)
     private Boolean accessible;
-    @Column(name = "visible", nullable = false, unique = true)
+    @Column(name = "visible", nullable = false)
     private Boolean visible;
 
     // TODO: Add User admin field
