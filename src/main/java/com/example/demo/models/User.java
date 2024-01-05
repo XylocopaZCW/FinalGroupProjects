@@ -3,6 +3,7 @@ package com.example.demo.models;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +25,9 @@ public class User {
     // TODO: un-comment out as the entities become available
 
 //    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Workspace> workspaces = new HashSet<>();
-//
+    @ManyToMany
+    private Set<Workspace> workspaces = new HashSet<>();
+
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<Message> messages = new HashSet<>();
 
