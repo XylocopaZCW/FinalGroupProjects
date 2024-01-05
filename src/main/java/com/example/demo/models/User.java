@@ -74,19 +74,19 @@ public class User {
 
     // TODO: un-comment out as the entities become available
 
-//    public Set<Workspace> getUserLanguages() {
-//        return workspaces;
-//    }
-//
-//    public void setUserLanguages(Set<Workspace> userLanguages) {
-//        this.workspaces = userLanguages;
-//    }
-//
-//    public Set<Message> getUserLanguages() {
+    public Set<Workspace> getWorkspaces() {
+        return workspaces;
+    }
+
+    public void setWorkspaces(Set<Workspace> workspaces) {
+        this.workspaces = workspaces;
+    }
+
+//    public Set<Message> getMessages() {
 //        return messages;
 //    }
 //
-//    public void setUserLanguages(Set<Message> userLanguages) {
-//        this.messages = userLanguages;
+//    public void setMessages(Set<Message> messages) {
+//        this.messages = messages;
 //    }
 }
