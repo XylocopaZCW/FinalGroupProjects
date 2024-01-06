@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 
 @Repository
-public interface MessagerRepository extends JpaRepository<Message, Long>  {
+public interface MessageRepository extends JpaRepository<Message, Long>  {
 
     
 
