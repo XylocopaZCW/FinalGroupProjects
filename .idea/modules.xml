@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/FinalGroupProjects.iml" filepath="$PROJECT_DIR$/.idea/FinalGroupProjects.iml" />
+      <module fileurl="file://$PROJECT_DIR$/zeechat.iml" filepath="$PROJECT_DIR$/zeechat.iml" />
     </modules>
   </component>
 </project>
