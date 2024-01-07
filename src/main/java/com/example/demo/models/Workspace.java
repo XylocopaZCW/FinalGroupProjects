@@ -20,7 +20,8 @@ public class Workspace {
     @Column(name = "visible", nullable = false)
     private Boolean visible;
 
-    // TODO: Add User admin field
+    @ManyToOne
+    private User admin;
 
 //    @Column(name = "admin", nullable = false, unique = true)
 //    private Set<User> admin = new HashSet<>();
@@ -72,6 +73,14 @@ public class Workspace {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
     }
 
     public Set<User> getUsers() {
