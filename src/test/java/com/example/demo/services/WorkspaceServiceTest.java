@@ -9,6 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
@@ -34,18 +38,31 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void getWorkspaceByIdTest() {
+    public void getWorkspaceByIdTest() throws Exception {
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
 
+        Workspace found = workspaceService.getWorkspaceById(1L);
+
+        assertNotNull(found);
     }
 
     @Test
     public void getWorkspaceByIdNotFoundTest() {
+        given(workspaceRepository.findById(0L)).willReturn(Optional.empty());
 
+        assertThrows(Exception.class, () -> workspaceService.getWorkspaceById(0L));
     }
 
     @Test
     public void getAllWorkspacesTest() {
+        Workspace workspace1 = new Workspace();
+        Workspace workspace2 = new Workspace();
+        List<Workspace> expected = Arrays.asList(workspace1, workspace2);
+        given(workspaceRepository.findAll()).willReturn(expected);
 
+        List<Workspace> actual = workspaceService.getAllWorkspaces();
+
+        assertEquals(expected, actual);
     }
 
     @Test
