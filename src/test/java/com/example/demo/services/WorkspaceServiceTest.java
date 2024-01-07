@@ -66,8 +66,16 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void updateWorkspaceTest() {
+    public void updateWorkspaceTest() throws Exception {
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
+        given(workspace.getName()).willReturn("Original");
 
+        WorkspaceDto updated = new WorkspaceDto();
+        updated.setName("New");
+        Workspace actual = workspaceService.updateWorkspace(1L, updated);
+
+        assertNotNull(actual);
+        assertEquals("New", actual.getName());
     }
 
     @Test
