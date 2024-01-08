@@ -11,9 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
@@ -205,7 +203,17 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void getAllUsersInWorkspaceTest() {
+    public void getAllUsersInWorkspaceTest() throws Exception {
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        User user1 = new User();
+        User user2 = new User();
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        Set<User> expected = new HashSet<>(List.of(user1, user2));
+        workspace1.setUsers(expected);
 
+        Set<User> actual = workspaceService.getAllUsersInWorkspace(1L);
+
+        assertEquals(expected, actual);
     }
 }
