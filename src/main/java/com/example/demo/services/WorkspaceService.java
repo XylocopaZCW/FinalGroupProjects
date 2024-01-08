@@ -1,6 +1,7 @@
 package com.example.demo.services;
 
 import com.example.demo.dtos.WorkspaceDto;
+import com.example.demo.models.User;
 import com.example.demo.models.Workspace;
 import com.example.demo.repositories.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +49,17 @@ public class WorkspaceService {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new Exception("Workspace doesn't exist"));
         workspaceRepository.delete(workspace);
+    }
+
+    public User addUserToWorkspace(Long workspaceId, Long userId) {
+        return null;
+    }
+
+    public void removeUserFromWorkspace(Long workspaceId, Long userId) {
+
+    }
+
+    public List<User> getAllUsersInWorkspace(Long workspaceId) {
+        return null;
     }
 }
