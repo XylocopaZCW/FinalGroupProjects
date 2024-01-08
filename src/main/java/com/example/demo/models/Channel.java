@@ -39,6 +39,13 @@ public class Channel {
         this.visible = visible;
     }
 
+    public Long getChannelId() {
+        return channelId;
+    }
+
+    public void setChannelId(Long workspaceId) {
+        this.channelId = channelId;
+    }
     public String getChannelname() {
         return channelname;
     }
