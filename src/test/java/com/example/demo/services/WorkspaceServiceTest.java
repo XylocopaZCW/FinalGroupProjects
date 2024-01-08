@@ -25,10 +25,10 @@ public class WorkspaceServiceTest {
     private WorkspaceRepository workspaceRepository;
     @Mock
     private UserRepository userRepository;
-
     @Mock
     private Workspace workspace;
-
+    @Mock
+    private User user;
     @InjectMocks
     private WorkspaceService workspaceService;
 
@@ -169,18 +169,39 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void removeUserFromWorkspaceTest() {
+    public void removeUserFromWorkspaceTest() throws Exception {
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
 
+        workspaceService.removeUserFromWorkspace(1L, 1L);
+
+        assertFalse(workspace.getUsers().contains(user));
     }
 
     @Test
     public void removeUserFromWorkspaceUserNotFoundTest() {
+        User user = new User();
+        user.setUserId(1L);
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        assertThrows(Exception.class, () -> workspaceService.removeUserFromWorkspace(2L, 1L));
     }
 
     @Test
     public void removeUserFromWorkspaceWorkspaceNotFoundTest() {
+        User user = new User();
+        user.setUserId(1L);
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        assertThrows(Exception.class, () -> workspaceService.removeUserFromWorkspace(1L, 2L));
     }
 
     @Test
