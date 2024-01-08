@@ -100,13 +100,22 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void deleteWorkspaceTest() {
+    public void deleteWorkspaceTest() throws Exception {
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
 
+        workspaceService.deleteWorkspace(1L);
+
+        verify(workspaceRepository).delete(workspace);
     }
 
     @Test
     public void deleteWorkspaceNotFoundTest() {
+        Workspace original = new Workspace();
+        original.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(original));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        assertThrows(Exception.class, () -> workspaceService.deleteWorkspace(2L));
     }
 
     @Test
