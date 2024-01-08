@@ -28,4 +28,10 @@ public class MessageService {
         Message message = messageRepository.getReferenceById(messageDto.getMessageId());
         messageRepository.delete(message);
     }
+
+    // getMessageById(Long messageId)
+
+    // editMessage(Long messageId, MessageDto messageDto)
+
+    // listMessagesInChannel(Long channelId)
 }
