@@ -1,7 +1,9 @@
 package com.example.demo.services;
 
 import com.example.demo.dtos.WorkspaceDto;
+import com.example.demo.models.User;
 import com.example.demo.models.Workspace;
+import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WorkspaceRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,6 +23,8 @@ public class WorkspaceServiceTest {
 
     @Mock
     private WorkspaceRepository workspaceRepository;
+    @Mock
+    private UserRepository userRepository;
 
     @Mock
     private Workspace workspace;
@@ -119,18 +123,49 @@ public class WorkspaceServiceTest {
     }
 
     @Test
-    public void addUserToWorkspaceTest() {
+    public void addUserToWorkspaceTest() throws Exception {
+        User user = new User();
+        user.setUserId(1L);
+        user.setUsername("TestUser");
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
+        given(userRepository.save(any(User.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        User actual = workspaceService.addUserToWorkspace(1L, 1L);
+
+        assertNotNull(actual);
+        assertEquals("TestUser", actual.getUsername());
+        assertTrue(actual.getWorkspaces().contains(workspace1));
+        assertTrue(workspace1.getUsers().contains(actual));
     }
 
     @Test
     public void addUserToWorkspaceUserNotFoundTest() {
+        User user = new User();
+        user.setUserId(1L);
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        assertThrows(Exception.class, () -> workspaceService.addUserToWorkspace(1L, 2L));
     }
 
     @Test
     public void addUserToWorkspaceWorkspaceNotFoundTest() {
+        User user = new User();
+        user.setUserId(1L);
+        Workspace workspace1 = new Workspace();
+        workspace1.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace1));
+        given(userRepository.findById(1L)).willReturn(Optional.of(user));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        assertThrows(Exception.class, () -> workspaceService.addUserToWorkspace(2L, 1L));
     }
 
     @Test
