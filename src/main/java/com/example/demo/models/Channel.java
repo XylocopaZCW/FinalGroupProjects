@@ -24,7 +24,7 @@ public class Channel {
     private Set<Message> messages = new HashSet<>();
 
     @ManyToOne
-    private Set<Workspace> workspaces = new HashSet<>();
+    private Workspace workspace;
 
     @ManyToMany
     private Set<User> users = new HashSet<>();
