@@ -67,29 +67,89 @@ public class WorkspaceServiceTest {
 
     @Test
     public void updateWorkspaceTest() throws Exception {
-        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
-        given(workspace.getName()).willReturn("Original");
+        Workspace original = new Workspace();
+        original.setName("Original");
+        original.setAccessible(false);
+        original.setVisible(false);
+        original.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(original));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         WorkspaceDto updated = new WorkspaceDto();
         updated.setName("New");
+        updated.setAccessible(true);
+        updated.setVisible(true);
         Workspace actual = workspaceService.updateWorkspace(1L, updated);
 
         assertNotNull(actual);
         assertEquals("New", actual.getName());
+        assertTrue(actual.getAccessible());
+        assertTrue(actual.getVisible());
     }
 
     @Test
     public void updateWorkspaceNotFoundTest() {
+        Workspace original = new Workspace();
+        original.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(original));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
+        WorkspaceDto updated = new WorkspaceDto();
+
+        assertThrows(Exception.class, () -> workspaceService.updateWorkspace(2L, updated));
     }
 
     @Test
-    public void deleteWorkspaceTest() {
+    public void deleteWorkspaceTest() throws Exception {
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(workspace));
 
+        workspaceService.deleteWorkspace(1L);
+
+        verify(workspaceRepository).delete(workspace);
     }
 
     @Test
     public void deleteWorkspaceNotFoundTest() {
+        Workspace original = new Workspace();
+        original.setWorkspaceId(1L);
+        given(workspaceRepository.findById(1L)).willReturn(Optional.of(original));
+        given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
+
+        assertThrows(Exception.class, () -> workspaceService.deleteWorkspace(2L));
+    }
+
+    @Test
+    public void addUserToWorkspaceTest() {
+
+    }
+
+    @Test
+    public void addUserToWorkspaceUserNotFoundTest() {
+
+    }
+
+    @Test
+    public void addUserToWorkspaceWorkspaceNotFoundTest() {
+
+    }
+
+    @Test
+    public void removeUserFromWorkspaceTest() {
+
+    }
+
+    @Test
+    public void removeUserFromWorkspaceUserNotFoundTest() {
+
+    }
+
+    @Test
+    public void removeUserFromWorkspaceWorkspaceNotFoundTest() {
+
+    }
+
+    @Test
+    public void getAllUsersInWorkspaceTest() {
 
     }
 }

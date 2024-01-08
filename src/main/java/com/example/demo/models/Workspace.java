@@ -20,18 +20,16 @@ public class Workspace {
     @Column(name = "visible", nullable = false)
     private Boolean visible;
 
+    // Gonna keep it as one admin (the user that created the workspace) for the time being
     @ManyToOne
     private User admin;
-
-//    @Column(name = "admin", nullable = false, unique = true)
-//    private Set<User> admin = new HashSet<>();
 
 //    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ManyToMany
     private Set<User> users = new HashSet<>();
 
-//    @OneToMany
-//    private Set<Channel> channels = new HashSet<>();
+    @OneToMany
+    private Set<Channel> channels = new HashSet<>();
 
 
     public Workspace() {
@@ -89,5 +87,13 @@ public class Workspace {
 
     public void setUsers(Set<User> users) {
         this.users = users;
+    }
+
+    public Set<Channel> getChannels() {
+        return channels;
+    }
+
+    public void setChannels(Set<Channel> channels) {
+        this.channels = channels;
     }
 }
