@@ -1,5 +1,6 @@
 package com.example.demo.models;
 import java.sql.Date;
+import java.util.Set;
 import java.util.HashSet;
 
 import jakarta.persistence.*;
@@ -24,8 +25,8 @@ public class Message {
     @ManyToOne
     private User user;
 
-    // @ManyToMany
-    // private Set<Channel> channels = new HashSet<>();
+     @ManyToMany
+     private Set<Channel> channels = new HashSet<>();
 
 
 
@@ -63,10 +64,10 @@ public class Message {
     public void setUser(User user) {
         this.user = user;
     }
-    // public Set<Channel> getChannels() {
-    //     return this.channels;
-    // }
-    // public void setChannels(Set<Channel> channels) {
-    //     this.channels = channels;
-    // }
+     public Set<Channel> getChannels() {
+         return this.channels;
+     }
+     public void setChannels(Set<Channel> channels) {
+         this.channels = channels;
+     }
 }
