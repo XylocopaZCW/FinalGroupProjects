@@ -34,15 +34,16 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
-    public Message editMessage(Long messageId, MessageDto messageDto) throws Exception {
-        Message message = messageRepository.findById(messageId)
+    public Message editMessage(MessageDto messageDto) throws Exception {
+        Message message = messageRepository.findById(messageDto.getMessageId())
                 .orElseThrow(() -> new Exception("Message doesn't exist"));
         message.setBody(messageDto.getBody());
         return messageRepository.save(message);
     }
 
-    public void deleteMessage(MessageDto messageDto) {
-        Message message = messageRepository.getReferenceById(messageDto.getMessageId());
+    public void deleteMessage(MessageDto messageDto) throws Exception {
+        Message message = messageRepository.findById(messageDto.getMessageId())
+                .orElseThrow(() -> new Exception("Message doesn't exist"));
         messageRepository.delete(message);
     }
 
