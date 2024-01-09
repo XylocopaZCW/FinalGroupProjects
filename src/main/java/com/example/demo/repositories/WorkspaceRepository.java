@@ -9,5 +9,4 @@ import java.util.Set;
 
 @Repository
 public interface WorkspaceRepository extends JpaRepository<Workspace, Long> {
-    public Set<User> find(Long userId);
 }
