@@ -43,8 +43,8 @@ public class MessageController {
     @PutMapping("/editMessage")
     public ResponseEntity<?> editMessage(@RequestBody MessageDto messageDto){
         try{
-            messageService.editMessage(messageDto.getMessageId(), messageDto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            Message message = messageService.editMessage(messageDto);
+            return new ResponseEntity<>(message, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
