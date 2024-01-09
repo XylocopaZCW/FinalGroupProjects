@@ -3,6 +3,7 @@ package com.example.demo.models;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -68,5 +69,9 @@ public class Channel {
 
     public void setVisible(Boolean visible) {
         this.visible = visible;
+    }
+
+    public  Set<User> getUsers() {
+        return users;
     }
 }
