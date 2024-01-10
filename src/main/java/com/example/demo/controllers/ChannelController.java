@@ -2,7 +2,6 @@ package com.example.demo.controllers;
 
 import com.example.demo.dtos.ChannelDto;
 import com.example.demo.models.Channel;
-import com.example.demo.repositories.UserRepository;
 import com.example.demo.services.ChannelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,7 +38,7 @@ public class ChannelController {
         return new ResponseEntity<>(channelService.getAllChannel(), HttpStatus.OK);
     }
 
-    @PutMapping("/{channelId)")
+    @PutMapping("/{channelId}")
     public ResponseEntity<?> updateChannel(@PathVariable Long channelId, @RequestBody ChannelDto channelDto) throws Exception {
         return new ResponseEntity<>(channelService.updateChannel(channelId, channelDto), HttpStatus.OK);
     }
@@ -48,7 +47,7 @@ public class ChannelController {
         channelService.deleteChannel(channelId);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/{channelId/users")
+    @PostMapping("/{channelId}/users")
     public ResponseEntity<?> addUserToChannel(@PathVariable Long channelId, @RequestBody Long userId) throws Exception{
         return new ResponseEntity<>(channelService.addUserToChannel(channelId, userId), HttpStatus.OK);
     }
