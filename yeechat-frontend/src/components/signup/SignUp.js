@@ -19,11 +19,41 @@ const defaultTheme = createTheme();
 export default function SignUp() {
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const userData = new FormData(event.currentTarget);
+        const username = userData.get('username');
+        const email = userData.get('email');
+        const password = userData.get('password');
+        const confirmpassword = userData.get('confirm-password');
         console.log({
-            email: data.get('email'),
-            password: data.get('password'),
+            username,
+            email,
         });
+        if (password !== confirmpassword) {
+            console.log("Passwords don't match");
+        }
+        else {
+            fetch('http://localhost:8080/api/users/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Success:', data);
+                    if (data.userId) {
+                        sessionStorage.setItem('userId', data.userId);
+                    }
+
+                    // Redirect to dashboard
+                    window.location.href = '/';
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    // TODO: Send an error message to the user
+                });
+        }
     };
 
     return (
@@ -74,6 +104,17 @@ export default function SignUp() {
                                     label="Password"
                                     type="password"
                                     id="password"
+                                    autoComplete="new-password"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    required
+                                    fullWidth
+                                    name="confirm-password"
+                                    label="Contfirm Password"
+                                    type="password"
+                                    id="confirm-password"
                                     autoComplete="new-password"
                                 />
                             </Grid>
