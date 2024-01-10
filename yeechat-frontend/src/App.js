@@ -1,8 +1,9 @@
 import './App.css';
+import SideBar from './components/SideBar';
 
 function App() {
   return (
-      <h1>WELCOME TO YEECHAT!</h1>
+      <SideBar/>
   );
 }
 
