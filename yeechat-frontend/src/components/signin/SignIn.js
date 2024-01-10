@@ -18,11 +18,37 @@ const defaultTheme = createTheme();
 export default function SignIn() {
     const handleSubmit = (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        const userData = new FormData(event.currentTarget);
+        const username = userData.get('username');
+        const password = userData.get('password');
+        console.log({username, password});
+
+        const user = {
+            username: username,
+            password: password
+        };
+
+        fetch('http://localhost:8080/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(user)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                if (data.userId) {
+                    sessionStorage.setItem('userId', data.userId);
+                    // Redirect to dashboard
+                    window.location.href = '/';
+                }
+
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
     };
 
     return (
@@ -48,10 +74,10 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
                         />
                         <TextField
