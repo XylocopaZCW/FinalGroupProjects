@@ -22,4 +22,6 @@ public class ChannelTest {
         assertTrue(channel.getVisible());
     }
 
+
+
 }
