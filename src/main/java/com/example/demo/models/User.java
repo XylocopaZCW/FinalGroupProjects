@@ -3,6 +3,7 @@ package com.example.demo.models;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -27,6 +28,9 @@ public class User {
 //    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @ManyToMany
     private Set<Workspace> workspaces = new HashSet<>();
+
+    @ManyToMany
+    private Set<Channel> channels = new HashSet<>();
 
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
 //    private Set<Message> messages = new HashSet<>();
@@ -80,6 +84,10 @@ public class User {
 
     public void setWorkspaces(Set<Workspace> workspaces) {
         this.workspaces = workspaces;
+    }
+
+    public Set<Channel> getChannels() {
+        return channels;
     }
 
 //    public Set<Message> getMessages() {

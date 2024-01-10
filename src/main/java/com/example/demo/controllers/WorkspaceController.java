@@ -15,6 +15,7 @@ public class WorkspaceController {
 
     @Autowired
     public WorkspaceController(WorkspaceService workspaceService) {
+
         this.workspaceService = workspaceService;
     }
 
