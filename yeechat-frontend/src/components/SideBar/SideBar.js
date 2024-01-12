@@ -15,6 +15,7 @@ import React from 'react';
 // import MailIcon from '@mui/icons-material/Mail';
 
 import {Menu} from 'semantic-ui-react';
+import UserInfo from './UserInfo/UserInfo';
 import "./SideBar.css";
 
 // const drawerWidth = 240;
@@ -88,6 +89,7 @@ export const SideBar = () => {
     console.log("Here's da sidebar")
     return (
         <Menu vertical fixed="left" borderless size="large" className="side_bar">
+            <UserInfo />
         </Menu>
     )
 }
