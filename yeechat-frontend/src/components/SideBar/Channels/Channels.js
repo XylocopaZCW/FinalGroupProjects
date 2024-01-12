@@ -4,11 +4,15 @@ import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import TextField from "@mui/material/TextField";
 import Box from '@mui/material/Box';
 
+const userId = sessionStorage.getItem('userId');
+// TODO: Un-hardcode me pls!
+const workspaceId = 1;
+
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
     const [channelAddState, setChannelAddState] = useState({ name: ''});
     const [isLoadingState, setLoadingState] = useState(false);
-    const [channelsState, setChannelsState] = useState([]);
+    const [channels, setChannels] = useState([]);
 
     // const channelsRef = firebase.database().ref("channels");
     // const usersRef = firebase.database().ref("users");
@@ -44,7 +48,10 @@ const Channels = (props) => {
     }
 
     const displayChannels = () => {
-        fetch('http://localhost:8080/api/channels', {
+        // Replace `{workspaceId}` with the actual ID.
+        const workspaceId = 'your_workspace_id'; // Update with actual logic to get workspaceId
+
+        fetch(`http://localhost:8080/api/workspaces/${workspaceId}/channels`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
@@ -52,20 +59,35 @@ const Channels = (props) => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                const dataContainer = document.getElementById('data-container');
-                data.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.textContent = `${item.channelname}`;
-                    dataContainer.appendChild(itemElement);
-                });
+                console.log('Raw API data:', data); // Check the structure of 'data'
+                if (Array.isArray(data)) {
+                    setChannels(data);
+                } else {
+                    console.log('Data is not an array:', data);
+                    // Handle non-array data or set a default empty array
+                    setChannels([]);
+                }
             })
-            .catch((error) => {
-                console.error('Error:', error);
-                // TODO: Send an error message to the user
-            });
-
     }
+
+    useEffect(() => {
+        displayChannels();
+    }, []);
+
+    return (
+        <>
+            <Menu.Menu style={{ marginTop: '35px' }}>
+                {/* Other menu items */}
+                {channels.map(channel => (
+                    <Menu.Item key={channel.id}>
+                        {channel.channelName}
+                    </Menu.Item>
+                ))}
+            </Menu.Menu>
+            {/* Rest of your component */}
+        </>
+    );
+
 
     // const selectChannel = (channel) => {
     //     setLastVisited(props.user,props.channel);
@@ -95,7 +117,7 @@ const Channels = (props) => {
         const channel = {
             channelName: channelAddState.channelName,
             accessibility: true,
-            visible: true
+            visible: true,
         };
 
         console.log("Submitting channel:", channel);
@@ -133,7 +155,7 @@ const Channels = (props) => {
             <span>
                 <Icon name="exchange" /> Channels
             </span>
-            ({channelsState.length})
+            ({channels.length})
         </Menu.Item>
         {/*{displayChannels()}*/}
         <Menu.Item>

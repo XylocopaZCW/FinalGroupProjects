@@ -44,7 +44,7 @@ public class Channel {
         return channelId;
     }
 
-    public void setChannelId(Long workspaceId) {
+    public void setChannelId(Long channelId) {
         this.channelId = channelId;
     }
     public String getChannelname() {
