@@ -1,5 +1,5 @@
 package com.example.demo.models;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
 
@@ -12,14 +12,15 @@ import jakarta.persistence.*;
 public class Message {
    
 
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long messageId;
 
-    @Column(name = "body", nullable = false, unique = true)
+    @Column(name = "body", nullable = false)
     private String body;
 
-    @Column(name = "date", nullable = false, unique = true)
+    @Column(name = "date", nullable = false)
     private Date date;
 
     @ManyToOne
@@ -31,6 +32,7 @@ public class Message {
 
 
     public Message() {
+        this.date = new Date();
     }
 
     public Message(String body, Date date ) {

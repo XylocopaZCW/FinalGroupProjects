@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -23,40 +25,34 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/sendMessage")
-    public ResponseEntity<?> sendMessage(@RequestBody MessageDto messageDto){
-        try {
-            Message newMessage = messageService.sendMessage(messageDto);
-            logger.info("Message: " + messageDto);
-            return new ResponseEntity<>(newMessage, HttpStatus.OK);
-        } catch (Exception e) {
-            logger.info("Error: " + e.getMessage());
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/sendMessage/{userID}")
+    public ResponseEntity<?> sendMessage(@PathVariable Long userID, @RequestBody MessageDto messageDto) throws Exception {
+        Message newMessage = messageService.sendMessage(messageDto, userID);
+        return new ResponseEntity<>(newMessage, HttpStatus.OK);
     }
 
-     @GetMapping("/getMessageById")
-     public ResponseEntity<?> getMessageById(@RequestBody MessageDto messageDto) {
-        try {
-            Message message = messageService.getMessageById(messageDto.getMessageId());
-            return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    @PostMapping("/sendMessage/{userID}/{channelID}")
+    public ResponseEntity<?> sendMessageToChannel(@PathVariable Long userID, @PathVariable Long channelID, @RequestBody MessageDto messageDto) throws Exception {
+        Message newMessage = messageService.sendMessage(messageDto, userID);
+        return new ResponseEntity<>(newMessage, HttpStatus.OK);
     }
 
-    @PutMapping("/editMessage")
-    public ResponseEntity<?> editMessage(@RequestBody MessageDto messageDto){
-        try{
-            Message message = messageService.editMessage(messageDto);
+     @GetMapping("/{messageID}")
+     public ResponseEntity<?> getMessageById(@PathVariable  Long messageID) throws Exception {
+        Message message = messageService.getMessageById(messageID);
+        return new ResponseEntity<>(message, HttpStatus.OK);
+
+    }
+
+    @PutMapping("/{messageID}")
+    public ResponseEntity<?> editMessage(@PathVariable Long messageID, @RequestBody MessageDto messageDto) throws Exception{
+            Message message = messageService.editMessage(messageID, messageDto);
             return new ResponseEntity<>(message, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 
     @GetMapping("/getAllMessages")
-    public ResponseEntity<?> getAllMessages(@RequestBody MessageDto messageDto) {
+    public ResponseEntity<?> getAllMessages() {
         try {
             List<Message> messageList =  messageService.getAllMessages();
             return new ResponseEntity<>(messageList, HttpStatus.OK);
