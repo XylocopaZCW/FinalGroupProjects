@@ -40,7 +40,7 @@ const Channels = (props) => {
     }
 
     const checkIfFormValid = () => {
-        return channelAddState && channelAddState.name && channelAddState.description;
+        return channelAddState.channelName;
     }
 
     const displayChannels = () => {
@@ -95,12 +95,23 @@ const Channels = (props) => {
         const channelName = channelData.get('channelName');
         // const channelName =  event.currentTarget;
         console.log({channelName});
+    }
+
+    const onSubmit = (event) => {
+        event.preventDefault();
+
+        if (!checkIfFormValid()) {
+            console.log("Form is not valid");
+            return;
+        }
 
         const channel = {
-            channelName: channelName,
+            channelName: channelAddState.channelName,
             accessibility: true,
             visible: true
         };
+
+        console.log("Submitting channel:", channel);
 
         fetch('http://localhost:8080/api/channels', {
             method: 'POST',
@@ -112,23 +123,23 @@ const Channels = (props) => {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-
+                closeModal();
+                // Update state or perform other actions as necessary
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // TODO: Send an error message to the user
+                // Handle the error appropriately
             });
     }
 
-    const handleInput = (e) => {
 
-        let target = e.target;
+    const handleInput = (e) => {
+        const { name, value } = e.target;
         setChannelAddState((currentState) => {
-            let updatedState = { ...currentState };
-            updatedState[target.name] = target.value;
-            return updatedState;
-        })
+            return { ...currentState, [name]: value };
+        });
     }
+
 
     return <> <Menu.Menu style={{ marginTop: '35px' }}>
         <Menu.Item style={{fontSize : '17px'}}>
@@ -159,58 +170,24 @@ const Channels = (props) => {
                 Create Channel
             </Modal.Header>
             <Modal.Content>
-                {/*<Form onSubmit={onSubmit}>*/}
-                {/*    <Segment stacked>*/}
-                {/*        <Form.Input*/}
-                {/*            name="channelName"*/}
-                {/*            value={channelAddState.channelName}*/}
-                {/*            onChange={handleInput}*/}
-                {/*            type="text"*/}
-                {/*            placeholder="Enter Channel Name"*/}
-                {/*        />*/}
-                {/*    </Segment>*/}
-                {/*</Form>*/}
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="channelName"
-                        label="Enter channel name"
-                        name="channelName"
-                        autoComplete="channelName"
-                        autoFocus
-                    />
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
-                    >
+                <Form onSubmit={onSubmit}>
+                    <Segment stacked>
+                        <Form.Input
+                            name="channelName"
+                            value={channelAddState.channelName}
+                            onChange={handleInput}
+                            type="text"
+                            placeholder="Enter Channel Name"
+                        />
+                    </Segment>
+                    <Button loading={isLoadingState} type="submit">
                         <Icon name="checkmark" /> Save
                     </Button>
                     <Button onClick={closeModal}>
                         <Icon name="remove" /> Cancel
                     </Button>
-                </Box>
-                </Box>
+                </Form>
             </Modal.Content>
-            <Modal.Actions>
-                {/*<Button loading={isLoadingState} onClick={onSubmit}>*/}
-                {/*    <Icon name="checkmark" /> Save*/}
-                {/*</Button>*/}
-                {/*<Button onClick={closeModal}>*/}
-                {/*    <Icon name="remove" /> Cancel*/}
-                {/*</Button>*/}
-            </Modal.Actions>
         </Modal>
     </>
 }
