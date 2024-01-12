@@ -20,15 +20,15 @@ export default function Messages() {
         event.preventDefault();
         const messageData = new FormData(event.currentTarget);
         const messagebody = messageData.get('message');
-        const date = new Date().toISOString().split('T')[0]
         console.log({messagebody});
 
         const message = {
-            body: messagebody,
-            date: date
+            body: messagebody
         };
 
-        fetch('http://localhost:8080/api/messages/sendMessage', {
+        const userId = sessionStorage.getItem("userId") ?? "1"
+
+        fetch(`http://localhost:8080/api/messages/sendMessage/${userId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
