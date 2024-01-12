@@ -40,6 +40,7 @@ export default function SignIn() {
                 console.log('Success:', data);
                 if (data.userId) {
                     sessionStorage.setItem('userId', data.userId);
+                    sessionStorage.setItem('username', data.username);
                     // Redirect to dashboard
                     window.location.href = '/';
                 }

@@ -1,11 +1,14 @@
 import './App.css';
-import SideBar from './components/SideBar';
+import {SideBar} from './components/SideBar/SideBar';
 
-console.log(sessionStorage.getItem("userId"));
+console.log(sessionStorage.getItem('userId'));
+console.log(sessionStorage.getItem('username'));
 
 function App() {
   return (
-      <SideBar/>
+      <div>
+        <SideBar/>
+      </div>
   );
 }
 
