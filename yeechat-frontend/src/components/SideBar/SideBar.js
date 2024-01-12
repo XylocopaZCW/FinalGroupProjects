@@ -15,8 +15,22 @@ import React from 'react';
 // import MailIcon from '@mui/icons-material/Mail';
 
 import {Menu} from 'semantic-ui-react';
-import UserInfo from './UserInfo/UserInfo';
 import "./SideBar.css";
+import UserInfo from './UserInfo/UserInfo';
+import Workspaces from './Workspaces/Workspaces';
+import Channels from "./Channels/Channels";
+
+export const SideBar = () => {
+    return (
+        <Menu vertical fixed="left" borderless size="large" className="side_bar">
+            <UserInfo/>
+            <hr/>
+            <Workspaces/>
+            <hr/>
+            <Channels/>
+        </Menu>
+    )
+}
 
 // const drawerWidth = 240;
 //
@@ -84,12 +98,3 @@ import "./SideBar.css";
 //         </Box>
 //     );
 // }
-
-export const SideBar = () => {
-    console.log("Here's da sidebar")
-    return (
-        <Menu vertical fixed="left" borderless size="large" className="side_bar">
-            <UserInfo />
-        </Menu>
-    )
-}
