@@ -84,19 +84,6 @@ const Channels = (props) => {
         window.location = '/message'
     }
 
-        const onSubmit = (event) => {
-
-        // if (!checkIfFormValid()) {
-        //     return;
-        // }
-
-        event.preventDefault();
-        const channelData = new FormData(event.currentTarget);
-        const channelName = channelData.get('channelName');
-        // const channelName =  event.currentTarget;
-        console.log({channelName});
-    }
-
     const onSubmit = (event) => {
         event.preventDefault();
 
