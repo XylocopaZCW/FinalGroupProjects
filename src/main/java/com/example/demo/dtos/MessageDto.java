@@ -5,7 +5,7 @@ import com.example.demo.models.Message;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
-import java.sql.Date;
+import java.util.Date;
 
 public class MessageDto {
 

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
-
+import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
@@ -42,23 +43,29 @@ const Channels = (props) => {
         return channelAddState.channelName;
     }
 
-    // const displayChannels = () => {
-    //     if (channelsState.length > 0) {
-    //         return channelsState.map((channel) => {
-    //             return <Menu.Item
-    //                 key={channel.id}
-    //                 name={channel.name}
-    //                 onClick={() => selectChannel(channel)}
-    //                 active={props.channel && channel.id === props.channel.id && !props.channel.isFavourite}
-    //             >
-    //                 <Notification user={props.user} channel={props.channel}
-    //                               notificationChannelId={channel.id}
-    //                               displayName= {"# " + channel.name} />
-    //
-    //             </Menu.Item>
-    //         })
-    //     }
-    // }
+    const displayChannels = () => {
+        fetch('http://localhost:8080/api/channels', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                const dataContainer = document.getElementById('data-container');
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.textContent = `${item.channelname}`;
+                    dataContainer.appendChild(itemElement);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
+
+    }
 
     // const selectChannel = (channel) => {
     //     setLastVisited(props.user,props.channel);
@@ -71,6 +78,24 @@ const Channels = (props) => {
     //     lastVisited.set(firebase.database.ServerValue.TIMESTAMP);
     //     lastVisited.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
     // }
+
+    const goToMessages = (event) => {
+        event.preventDefault();
+        window.location = '/message'
+    }
+
+        const onSubmit = (event) => {
+
+        // if (!checkIfFormValid()) {
+        //     return;
+        // }
+
+        event.preventDefault();
+        const channelData = new FormData(event.currentTarget);
+        const channelName = channelData.get('channelName');
+        // const channelName =  event.currentTarget;
+        console.log({channelName});
+    }
 
     const onSubmit = (event) => {
         event.preventDefault();
@@ -129,6 +154,16 @@ const Channels = (props) => {
                 <Icon name="add" /> New Channel
             </span>
         </Menu.Item>
+        <Menu.Item>
+            <span className="clickable" onClick={displayChannels} >
+                <Icon name="eye" /> View Channels
+            </span>
+        </Menu.Item>
+        <Menu.Item>
+            <span className="clickable" onClick={goToMessages} >
+                <Icon name="mail" /> Send Message
+            </span>
+        </Menu.Item>
     </Menu.Menu>
         <Modal open={modalOpenState} onClose={closeModal}>
             <Modal.Header>
@@ -153,9 +188,6 @@ const Channels = (props) => {
                     </Button>
                 </Form>
             </Modal.Content>
-            {/*<Modal.Actions>*/}
-            {/*    */}
-            {/*</Modal.Actions>*/}
         </Modal>
     </>
 }
