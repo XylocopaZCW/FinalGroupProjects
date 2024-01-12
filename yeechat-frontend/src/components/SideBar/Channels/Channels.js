@@ -39,7 +39,7 @@ const Channels = (props) => {
     }
 
     const checkIfFormValid = () => {
-        return channelAddState && channelAddState.name && channelAddState.description;
+        return channelAddState.channelName;
     }
 
     // const displayChannels = () => {
@@ -73,21 +73,20 @@ const Channels = (props) => {
     // }
 
     const onSubmit = (event) => {
+        event.preventDefault();
 
         if (!checkIfFormValid()) {
+            console.log("Form is not valid");
             return;
         }
 
-        event.preventDefault();
-        const channelData = new FormData(event.currentTarget);
-        const channelName = channelData.get('channelName');
-        console.log({channelName});
-
         const channel = {
-            channelName: channelName,
+            channelName: channelAddState.channelName,
             accessibility: true,
             visible: true
         };
+
+        console.log("Submitting channel:", channel);
 
         fetch('http://localhost:8080/api/channels', {
             method: 'POST',
@@ -99,23 +98,23 @@ const Channels = (props) => {
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-
+                closeModal();
+                // Update state or perform other actions as necessary
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // TODO: Send an error message to the user
+                // Handle the error appropriately
             });
     }
 
-    const handleInput = (e) => {
 
-        let target = e.target;
+    const handleInput = (e) => {
+        const { name, value } = e.target;
         setChannelAddState((currentState) => {
-            let updatedState = { ...currentState };
-            updatedState[target.name] = target.value;
-            return updatedState;
-        })
+            return { ...currentState, [name]: value };
+        });
     }
+
 
     return <> <Menu.Menu style={{ marginTop: '35px' }}>
         <Menu.Item style={{fontSize : '17px'}}>
@@ -146,16 +145,17 @@ const Channels = (props) => {
                             placeholder="Enter Channel Name"
                         />
                     </Segment>
+                    <Button loading={isLoadingState} type="submit">
+                        <Icon name="checkmark" /> Save
+                    </Button>
+                    <Button onClick={closeModal}>
+                        <Icon name="remove" /> Cancel
+                    </Button>
                 </Form>
             </Modal.Content>
-            <Modal.Actions>
-                <Button loading={isLoadingState} onClick={onSubmit}>
-                    <Icon name="checkmark" /> Save
-                </Button>
-                <Button onClick={closeModal}>
-                    <Icon name="remove" /> Cancel
-                </Button>
-            </Modal.Actions>
+            {/*<Modal.Actions>*/}
+            {/*    */}
+            {/*</Modal.Actions>*/}
         </Modal>
     </>
 }
