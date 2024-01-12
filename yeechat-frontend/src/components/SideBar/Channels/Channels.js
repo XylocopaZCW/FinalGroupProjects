@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
-
+import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box';
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
@@ -42,23 +43,29 @@ const Channels = (props) => {
         return channelAddState && channelAddState.name && channelAddState.description;
     }
 
-    // const displayChannels = () => {
-    //     if (channelsState.length > 0) {
-    //         return channelsState.map((channel) => {
-    //             return <Menu.Item
-    //                 key={channel.id}
-    //                 name={channel.name}
-    //                 onClick={() => selectChannel(channel)}
-    //                 active={props.channel && channel.id === props.channel.id && !props.channel.isFavourite}
-    //             >
-    //                 <Notification user={props.user} channel={props.channel}
-    //                               notificationChannelId={channel.id}
-    //                               displayName= {"# " + channel.name} />
-    //
-    //             </Menu.Item>
-    //         })
-    //     }
-    // }
+    const displayChannels = () => {
+        fetch('http://localhost:8080/api/channels', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                const dataContainer = document.getElementById('data-container');
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.textContent = `${item.channelname}`;
+                    dataContainer.appendChild(itemElement);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
+
+    }
 
     // const selectChannel = (channel) => {
     //     setLastVisited(props.user,props.channel);
@@ -72,15 +79,21 @@ const Channels = (props) => {
     //     lastVisited.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
     // }
 
-    const onSubmit = (event) => {
+    const goToMessages = (event) => {
+        event.preventDefault();
+        window.location = '/message'
+    }
 
-        if (!checkIfFormValid()) {
-            return;
-        }
+        const onSubmit = (event) => {
+
+        // if (!checkIfFormValid()) {
+        //     return;
+        // }
 
         event.preventDefault();
         const channelData = new FormData(event.currentTarget);
         const channelName = channelData.get('channelName');
+        // const channelName =  event.currentTarget;
         console.log({channelName});
 
         const channel = {
@@ -130,31 +143,73 @@ const Channels = (props) => {
                 <Icon name="add" /> New Channel
             </span>
         </Menu.Item>
+        <Menu.Item>
+            <span className="clickable" onClick={displayChannels} >
+                <Icon name="eye" /> View Channels
+            </span>
+        </Menu.Item>
+        <Menu.Item>
+            <span className="clickable" onClick={goToMessages} >
+                <Icon name="mail" /> Send Message
+            </span>
+        </Menu.Item>
     </Menu.Menu>
         <Modal open={modalOpenState} onClose={closeModal}>
             <Modal.Header>
                 Create Channel
             </Modal.Header>
             <Modal.Content>
-                <Form onSubmit={onSubmit}>
-                    <Segment stacked>
-                        <Form.Input
-                            name="channelName"
-                            value={channelAddState.channelName}
-                            onChange={handleInput}
-                            type="text"
-                            placeholder="Enter Channel Name"
-                        />
-                    </Segment>
-                </Form>
+                {/*<Form onSubmit={onSubmit}>*/}
+                {/*    <Segment stacked>*/}
+                {/*        <Form.Input*/}
+                {/*            name="channelName"*/}
+                {/*            value={channelAddState.channelName}*/}
+                {/*            onChange={handleInput}*/}
+                {/*            type="text"*/}
+                {/*            placeholder="Enter Channel Name"*/}
+                {/*        />*/}
+                {/*    </Segment>*/}
+                {/*</Form>*/}
+                <Box
+                    sx={{
+                        marginTop: 8,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                    }}
+                >
+                <Box component="form" onSubmit={onSubmit} noValidate sx={{ mt: 1 }}>
+                    <TextField
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="channelName"
+                        label="Enter channel name"
+                        name="channelName"
+                        autoComplete="channelName"
+                        autoFocus
+                    />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                    >
+                        <Icon name="checkmark" /> Save
+                    </Button>
+                    <Button onClick={closeModal}>
+                        <Icon name="remove" /> Cancel
+                    </Button>
+                </Box>
+                </Box>
             </Modal.Content>
             <Modal.Actions>
-                <Button loading={isLoadingState} onClick={onSubmit}>
-                    <Icon name="checkmark" /> Save
-                </Button>
-                <Button onClick={closeModal}>
-                    <Icon name="remove" /> Cancel
-                </Button>
+                {/*<Button loading={isLoadingState} onClick={onSubmit}>*/}
+                {/*    <Icon name="checkmark" /> Save*/}
+                {/*</Button>*/}
+                {/*<Button onClick={closeModal}>*/}
+                {/*    <Icon name="remove" /> Cancel*/}
+                {/*</Button>*/}
             </Modal.Actions>
         </Modal>
     </>
