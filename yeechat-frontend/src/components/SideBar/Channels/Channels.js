@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
-import TextField from "@mui/material/TextField";
-import Box from '@mui/material/Box';
 
 const userId = sessionStorage.getItem('userId');
 // TODO: Un-hardcode me pls!
@@ -14,9 +12,6 @@ const Channels = (props) => {
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
 
-    // const channelsRef = firebase.database().ref("channels");
-    // const usersRef = firebase.database().ref("users");
-    //
     // useEffect(() => {
     //     channelsRef.on('child_added', (snap) => {
     //         setChannelsState((currentState) => {
@@ -48,8 +43,7 @@ const Channels = (props) => {
     }
 
     const displayChannels = () => {
-        // Replace `{workspaceId}` with the actual ID.
-        const workspaceId = 'your_workspace_id'; // Update with actual logic to get workspaceId
+        const workspaceId = 1;
 
         fetch(`http://localhost:8080/api/workspaces/${workspaceId}/channels`, {
             method: 'GET',
@@ -59,12 +53,11 @@ const Channels = (props) => {
         })
             .then(response => response.json())
             .then(data => {
-                console.log('Raw API data:', data); // Check the structure of 'data'
+                console.log('Raw API data:', data);
                 if (Array.isArray(data)) {
                     setChannels(data);
                 } else {
                     console.log('Data is not an array:', data);
-                    // Handle non-array data or set a default empty array
                     setChannels([]);
                 }
             })
@@ -73,21 +66,6 @@ const Channels = (props) => {
     useEffect(() => {
         displayChannels();
     }, []);
-
-    return (
-        <>
-            <Menu.Menu style={{ marginTop: '35px' }}>
-                {/* Other menu items */}
-                {channels.map(channel => (
-                    <Menu.Item key={channel.id}>
-                        {channel.channelName}
-                    </Menu.Item>
-                ))}
-            </Menu.Menu>
-            {/* Rest of your component */}
-        </>
-    );
-
 
     // const selectChannel = (channel) => {
     //     setLastVisited(props.user,props.channel);
@@ -158,6 +136,11 @@ const Channels = (props) => {
             ({channels.length})
         </Menu.Item>
         {/*{displayChannels()}*/}
+        {channels.map(channel => (
+            <Menu.Item key={channel.id}>
+                {channel.channelName}
+            </Menu.Item>
+        ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
                 <Icon name="add" /> New Channel
