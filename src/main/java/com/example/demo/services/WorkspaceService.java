@@ -29,7 +29,7 @@ public class WorkspaceService {
 
     public Workspace createWorkspace(WorkspaceDto workspaceDto) {
         Workspace newWorkspace = new Workspace();
-        newWorkspace.setName(workspaceDto.getName());
+        newWorkspace.setWorkspaceName(workspaceDto.getName());
         newWorkspace.setAccessible(workspaceDto.getAccessible());
         newWorkspace.setVisible(workspaceDto.getVisible());
         return workspaceRepository.save(newWorkspace);
@@ -47,7 +47,7 @@ public class WorkspaceService {
     public Workspace updateWorkspace(Long workspaceId, WorkspaceDto workspaceDto) throws Exception {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new Exception("Workspace doesn't exist"));
-        workspace.setName(workspaceDto.getName());
+        workspace.setWorkspaceName(workspaceDto.getName());
         workspace.setAccessible(workspaceDto.getAccessible());
         workspace.setVisible(workspaceDto.getVisible());
         return workspaceRepository.save(workspace);
@@ -101,5 +101,11 @@ public class WorkspaceService {
         workspace.getChannels().add(channel);
         workspaceRepository.save(workspace);
         return workspace;
+    }
+
+    public Set<Workspace> getWorkspacesForUser(Long userId) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User doesn't exist"));
+        return user.getWorkspaces();
     }
 }
