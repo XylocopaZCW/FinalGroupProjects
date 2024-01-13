@@ -12,34 +12,12 @@ const Channels = (props) => {
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
 
-    // useEffect(() => {
-    //     channelsRef.on('child_added', (snap) => {
-    //         setChannelsState((currentState) => {
-    //             let updatedState = [...currentState];
-    //             updatedState.push(snap.val());
-    //             return updatedState;
-    //         })
-    //     });
-    //
-    //     return () => channelsRef.off();
-    // }, [])
-    //
-    // useEffect(()=> {
-    //     if (channelsState.length > 0) {
-    //         props.selectChannel(channelsState[0])
-    //     }
-    // },[!props.channel ?channelsState : null ])
-
     const openModal = () => {
         setModalOpenState(true);
     }
 
     const closeModal = () => {
         setModalOpenState(false);
-    }
-
-    const checkIfFormValid = () => {
-        return channelAddState.channelName;
     }
 
     const displayChannels = () => {
@@ -51,7 +29,12 @@ const Channels = (props) => {
                 'Content-Type': 'application/json'
             },
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Raw API data:', data);
                 if (Array.isArray(data)) {
@@ -61,23 +44,14 @@ const Channels = (props) => {
                     setChannels([]);
                 }
             })
+            .catch((error) => {
+                console.error('Fetch error:', error);
+            });
     }
 
     useEffect(() => {
         displayChannels();
     }, []);
-
-    // const selectChannel = (channel) => {
-    //     setLastVisited(props.user,props.channel);
-    //     setLastVisited(props.user,channel);
-    //     props.selectChannel(channel);
-    // }
-    //
-    // const setLastVisited = (user, channel) => {
-    //     const lastVisited = usersRef.child(user.uid).child("lastVisited").child(channel.id);
-    //     lastVisited.set(firebase.database.ServerValue.TIMESTAMP);
-    //     lastVisited.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
-    // }
 
     const goToMessages = (event) => {
         event.preventDefault();
@@ -87,7 +61,7 @@ const Channels = (props) => {
     const onSubmit = (event) => {
         event.preventDefault();
 
-        if (!checkIfFormValid()) {
+        if (!channelAddState.channelName) {
             console.log("Form is not valid");
             return;
         }
@@ -96,11 +70,12 @@ const Channels = (props) => {
             channelName: channelAddState.channelName,
             accessibility: true,
             visible: true,
+            workspaceId: workspaceId
         };
 
         console.log("Submitting channel:", channel);
 
-        fetch('http://localhost:8080/api/channels', {
+        fetch(`http://localhost:8080/api/channels/workspaces/${workspaceId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -111,11 +86,9 @@ const Channels = (props) => {
             .then(data => {
                 console.log('Success:', data);
                 closeModal();
-                // Update state or perform other actions as necessary
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // Handle the error appropriately
             });
     }
 
@@ -135,20 +108,14 @@ const Channels = (props) => {
             </span>
             ({channels.length})
         </Menu.Item>
-        {/*{displayChannels()}*/}
         {channels.map(channel => (
-            <Menu.Item key={channel.id}>
+            <Menu.Item key={channel.channelId}>
                 {channel.channelName}
             </Menu.Item>
         ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
                 <Icon name="add" /> New Channel
-            </span>
-        </Menu.Item>
-        <Menu.Item>
-            <span className="clickable" onClick={displayChannels} >
-                <Icon name="eye" /> View Channels
             </span>
         </Menu.Item>
         <Menu.Item>

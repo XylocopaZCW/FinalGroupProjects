@@ -3,10 +3,11 @@ package com.example.demo.services;
 import com.example.demo.dtos.ChannelDto;
 import com.example.demo.models.Channel;
 import com.example.demo.models.User;
+import com.example.demo.models.Workspace;
 import com.example.demo.repositories.ChannelRepository;
 import com.example.demo.repositories.UserRepository;
+import com.example.demo.repositories.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.expression.ExpressionException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,14 +17,16 @@ import java.util.Set;
 public class ChannelService {
     private final ChannelRepository channelRepository;
     private final UserRepository userRepository;
+    private final WorkspaceRepository workspaceRepository;
     @Autowired
-    public ChannelService(ChannelRepository channelRepository, UserRepository userRepository) {
+    public ChannelService(ChannelRepository channelRepository, UserRepository userRepository, WorkspaceRepository workspaceRepository) {
         this.channelRepository = channelRepository;
         this.userRepository = userRepository;
+        this.workspaceRepository = workspaceRepository;
     }
     public Channel createChannel(ChannelDto channelDto){
         Channel newChannel = new Channel();
-        newChannel.setChannelname(channelDto.getChannelName());
+        newChannel.setChannelName(channelDto.getChannelName());
         newChannel.setAccessible(channelDto.getAccessibility());
         newChannel.setVisible(channelDto.getVisible());
         return channelRepository.save(newChannel);
@@ -79,4 +82,19 @@ public class ChannelService {
         .orElseThrow(() -> new Exception("Channel doesn't exist"));
         return channel.getUsers();
     }
+
+    public Channel createChannelInWorkspace(Long workspaceId, ChannelDto channelDto) throws Exception {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new Exception("Workspace not found"));
+        Channel newChannel = new Channel();
+        newChannel.setChannelName(channelDto.getChannelName());
+        newChannel.setAccessible(channelDto.getAccessibility());
+        newChannel.setVisible(channelDto.getVisible());
+        newChannel.setWorkspace(workspace);
+        workspace.getChannels().add(newChannel);
+        channelRepository.save(newChannel);
+        workspaceRepository.save(workspace);
+        return newChannel;
+    }
+
 }

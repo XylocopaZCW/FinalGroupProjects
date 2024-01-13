@@ -1,9 +1,9 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -15,7 +15,7 @@ public class Channel {
     private Long channelId;
 
     @Column(name = "channelname", nullable = false, unique = true)
-    private String channelname;
+    private String channelName;
     @Column(name = "accessible", nullable = false)
     private Boolean accessible;
     @Column(name = "visible", nullable = false)
@@ -24,6 +24,7 @@ public class Channel {
     @ManyToMany
     private Set<Message> messages = new HashSet<>();
 
+    @JsonIgnore
     @ManyToOne
     private Workspace workspace;
 
@@ -34,8 +35,8 @@ public class Channel {
 
     }
 
-    public Channel(String channelname, Boolean accessible, Boolean visible) {
-        this.channelname = channelname;
+    public Channel(String channelName, Boolean accessible, Boolean visible) {
+        this.channelName = channelName;
         this.accessible = accessible;
         this.visible = visible;
     }
@@ -47,12 +48,12 @@ public class Channel {
     public void setChannelId(Long channelId) {
         this.channelId = channelId;
     }
-    public String getChannelname() {
-        return channelname;
+    public String getChannelName() {
+        return channelName;
     }
 
-    public void setChannelname(String channelname) {
-        this.channelname = channelname;
+    public void setChannelName(String channelName) {
+        this.channelName = channelName;
     }
 
     public Boolean getAccessible() {
@@ -79,4 +80,19 @@ public class Channel {
         this.users = users;
     }
 
+    public Workspace getWorkspace() {
+        return workspace;
+    }
+
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
 }
