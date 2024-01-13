@@ -10,6 +10,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { loginUser } from '../../api/userApi';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -21,34 +22,19 @@ export default function SignIn() {
         const userData = new FormData(event.currentTarget);
         const username = userData.get('username');
         const password = userData.get('password');
-        console.log({username, password});
+        console.log({ username, password });
 
-        const user = {
-            username: username,
-            password: password
-        };
-
-        fetch('http://localhost:8080/api/users/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-            .then(response => response.json())
+        loginUser(username, password)
             .then(data => {
                 console.log('Success:', data);
                 if (data.userId) {
                     sessionStorage.setItem('userId', data.userId);
                     sessionStorage.setItem('username', data.username);
-                    // Redirect to dashboard
                     window.location.href = '/';
                 }
-
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // TODO: Send an error message to the user
             });
     };
 

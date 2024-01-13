@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { registerUser } from '../../api/userApi';
 
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -23,37 +24,22 @@ export default function SignUp() {
         const username = userData.get('username');
         const email = userData.get('email');
         const password = userData.get('password');
-        const confirmpassword = userData.get('confirm-password');
-        console.log({username, email, password, confirmpassword});
+        const confirmPassword = userData.get('confirm-password');
+        console.log({ username, email, password, confirmPassword });
 
-        if (password !== confirmpassword) {
+        if (password !== confirmPassword) {
             console.log("Passwords don't match");
             return;
         }
 
-        const user = {
-            username: username,
-            email: email,
-            password: password
-        };
-
-        fetch('http://localhost:8080/api/users/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(user)
-        })
-            .then(response => response.json())
+        registerUser({ username, email, password })
             .then(data => {
                 console.log('Success:', data);
                 if (data.userId) {
                     sessionStorage.setItem('userId', data.userId);
                     sessionStorage.setItem('username', data.username);
-                    // Redirect to dashboard
                     window.location.href = '/';
                 }
-
             })
             .catch((error) => {
                 console.error('Error:', error);
