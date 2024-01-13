@@ -1,35 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
-import TextField from "@mui/material/TextField";
-import Box from '@mui/material/Box';
+
+const userId = sessionStorage.getItem('userId');
+// TODO: Un-hardcode me pls!
+const workspaceId = 1;
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
     const [channelAddState, setChannelAddState] = useState({ name: ''});
     const [isLoadingState, setLoadingState] = useState(false);
-    const [channelsState, setChannelsState] = useState([]);
-
-    // const channelsRef = firebase.database().ref("channels");
-    // const usersRef = firebase.database().ref("users");
-    //
-    // useEffect(() => {
-    //     channelsRef.on('child_added', (snap) => {
-    //         setChannelsState((currentState) => {
-    //             let updatedState = [...currentState];
-    //             updatedState.push(snap.val());
-    //             return updatedState;
-    //         })
-    //     });
-    //
-    //     return () => channelsRef.off();
-    // }, [])
-    //
-    // useEffect(()=> {
-    //     if (channelsState.length > 0) {
-    //         props.selectChannel(channelsState[0])
-    //     }
-    // },[!props.channel ?channelsState : null ])
+    const [channels, setChannels] = useState([]);
 
     const openModal = () => {
         setModalOpenState(true);
@@ -39,45 +20,38 @@ const Channels = (props) => {
         setModalOpenState(false);
     }
 
-    const checkIfFormValid = () => {
-        return channelAddState.channelName;
-    }
-
     const displayChannels = () => {
-        fetch('http://localhost:8080/api/channels', {
+        const workspaceId = 1;
+
+        fetch(`http://localhost:8080/api/workspaces/${workspaceId}/channels`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
             },
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                console.log('Success:', data);
-                const dataContainer = document.getElementById('data-container');
-                data.forEach(item => {
-                    const itemElement = document.createElement('div');
-                    itemElement.textContent = `${item.channelname}`;
-                    dataContainer.appendChild(itemElement);
-                });
+                console.log('Raw API data:', data);
+                if (Array.isArray(data)) {
+                    setChannels(data);
+                } else {
+                    console.log('Data is not an array:', data);
+                    setChannels([]);
+                }
             })
             .catch((error) => {
-                console.error('Error:', error);
-                // TODO: Send an error message to the user
+                console.error('Fetch error:', error);
             });
-
     }
 
-    // const selectChannel = (channel) => {
-    //     setLastVisited(props.user,props.channel);
-    //     setLastVisited(props.user,channel);
-    //     props.selectChannel(channel);
-    // }
-    //
-    // const setLastVisited = (user, channel) => {
-    //     const lastVisited = usersRef.child(user.uid).child("lastVisited").child(channel.id);
-    //     lastVisited.set(firebase.database.ServerValue.TIMESTAMP);
-    //     lastVisited.onDisconnect().set(firebase.database.ServerValue.TIMESTAMP);
-    // }
+    useEffect(() => {
+        displayChannels();
+    }, []);
 
     const goToMessages = (event) => {
         event.preventDefault();
@@ -87,7 +61,7 @@ const Channels = (props) => {
     const onSubmit = (event) => {
         event.preventDefault();
 
-        if (!checkIfFormValid()) {
+        if (!channelAddState.channelName) {
             console.log("Form is not valid");
             return;
         }
@@ -95,12 +69,13 @@ const Channels = (props) => {
         const channel = {
             channelName: channelAddState.channelName,
             accessibility: true,
-            visible: true
+            visible: true,
+            workspaceId: workspaceId
         };
 
         console.log("Submitting channel:", channel);
 
-        fetch('http://localhost:8080/api/channels', {
+        fetch(`http://localhost:8080/api/channels/workspaces/${workspaceId}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -111,11 +86,9 @@ const Channels = (props) => {
             .then(data => {
                 console.log('Success:', data);
                 closeModal();
-                // Update state or perform other actions as necessary
             })
             .catch((error) => {
                 console.error('Error:', error);
-                // Handle the error appropriately
             });
     }
 
@@ -133,17 +106,16 @@ const Channels = (props) => {
             <span>
                 <Icon name="exchange" /> Channels
             </span>
-            ({channelsState.length})
+            ({channels.length})
         </Menu.Item>
-        {/*{displayChannels()}*/}
+        {channels.map(channel => (
+            <Menu.Item key={channel.channelId}>
+                {channel.channelName}
+            </Menu.Item>
+        ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
                 <Icon name="add" /> New Channel
-            </span>
-        </Menu.Item>
-        <Menu.Item>
-            <span className="clickable" onClick={displayChannels} >
-                <Icon name="eye" /> View Channels
             </span>
         </Menu.Item>
         <Menu.Item>

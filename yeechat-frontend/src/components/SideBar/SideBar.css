@@ -1,4 +1,5 @@
 .side_bar {
-    background: #e6caaa !important;
+    background: linear-gradient(180deg,
+    #75efec, #1f8d8c)!important;
     font-size: 1.2rem !important;
 }

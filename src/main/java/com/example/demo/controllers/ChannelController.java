@@ -62,5 +62,10 @@ public class ChannelController {
         return new ResponseEntity<>(channelService.getAllUsersInChannel(channelId), HttpStatus.OK);
     }
 
-
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/workspaces/{workspaceId}")
+    public ResponseEntity<Channel> createChannelInWorkspace(@PathVariable Long workspaceId, @RequestBody ChannelDto channelDto) throws Exception {
+        Channel newChannel = channelService.createChannelInWorkspace(workspaceId, channelDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newChannel);
+    }
 }

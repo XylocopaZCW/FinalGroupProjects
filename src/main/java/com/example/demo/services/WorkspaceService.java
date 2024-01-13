@@ -1,8 +1,10 @@
 package com.example.demo.services;
 
 import com.example.demo.dtos.WorkspaceDto;
+import com.example.demo.models.Channel;
 import com.example.demo.models.User;
 import com.example.demo.models.Workspace;
+import com.example.demo.repositories.ChannelRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,13 @@ public class WorkspaceService {
 
     private final WorkspaceRepository workspaceRepository;
     private final UserRepository userRepository;
+    private final ChannelRepository channelRepository;
 
     @Autowired
-    public WorkspaceService(WorkspaceRepository workspaceRepository, UserRepository userRepository) {
+    public WorkspaceService(WorkspaceRepository workspaceRepository, UserRepository userRepository, ChannelRepository channelRepository) {
         this.workspaceRepository = workspaceRepository;
         this.userRepository = userRepository;
+        this.channelRepository = channelRepository;
     }
 
     public Workspace createWorkspace(WorkspaceDto workspaceDto) {
@@ -81,5 +85,21 @@ public class WorkspaceService {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new Exception("Workspace doesn't exist"));
         return workspace.getUsers();
+    }
+
+    public Set<Channel> getAllChannelsInWorkspace(Long workspaceId) throws Exception {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new Exception("Workspace doesn't exist"));
+        return workspace.getChannels();
+    }
+
+    public Workspace addChannelToWorkspace(Long workspaceId, Long channelId) throws Exception {
+        Workspace workspace = workspaceRepository.findById(workspaceId)
+                .orElseThrow(() -> new Exception("Workspace doesn't exist"));
+        Channel channel = channelRepository.findById(channelId)
+                .orElseThrow(() -> new Exception("Channel doesn't exist"));
+        workspace.getChannels().add(channel);
+        workspaceRepository.save(workspace);
+        return workspace;
     }
 }
