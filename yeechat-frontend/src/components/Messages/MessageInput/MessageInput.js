@@ -7,9 +7,10 @@ const MessageInput = () => {
 
     const [fileDialogState, setFileDialog] = useState(false);
 
+    const channelId = 12;
+
     const sendMessage = (e) => {
         const userId = sessionStorage.getItem("userId") ?? "1"
-        const channelId = 12;
 
         e.preventDefault();
         const body = messageState;
@@ -32,49 +33,52 @@ const MessageInput = () => {
                 .then(data => {
                     console.log('Success:', data);
                     setMessageState("");
-
-                    const dataContainer = document.getElementById('message-container');
-                    dataContainer.innerHTML = '';
-
-                    fetch('http://localhost:8080/api/messages/getAllMessages', {
-                        method: 'GET',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            const dataContainer = document.getElementById('message-container');
-                            data.forEach(item => {
-                                const itemElement = document.createElement('div');
-                                const itemElement2 = document.createElement('div')
-
-                                const formattedDate = new Date(item.date).toLocaleString('en-US', {
-                                    year: 'numeric',
-                                    month: '2-digit',
-                                    day: '2-digit',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit'
-                                });
-
-                                itemElement.textContent = `${formattedDate.replace(/\//g, '-')} ${sessionStorage.getItem('username') ?? "Sudo Kode"}`;
-                                itemElement2.textContent = `${item.body}`
-                                dataContainer.appendChild(itemElement);
-                                dataContainer.appendChild(itemElement2);
-                            });
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                            // TODO: Send an error message to the user
-                        });
+                    displayMessages(channelId);
                 })
                 .catch((error) => {
                     console.error('Error:', error);
                     // TODO: Send an error message to the user
                 });
         }
+    }
+
+    const displayMessages = (channelId) => {
+        const dataContainer = document.getElementById('message-container');
+        dataContainer.innerHTML = '';
+
+        fetch(`http://localhost:8080/api/messages/channel/${channelId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                const dataContainer = document.getElementById('message-container');
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    const itemElement2 = document.createElement('div')
+
+                    const formattedDate = new Date(item.date).toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+
+                    itemElement.textContent = `${formattedDate.replace(/\//g, '-')} ${sessionStorage.getItem('username') ?? "Sudo Kode"}`;
+                    itemElement2.textContent = `${item.body}`
+                    dataContainer.appendChild(itemElement);
+                    dataContainer.appendChild(itemElement2);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
     }
 
     const onMessageChange = (e) => {
@@ -89,16 +93,19 @@ const MessageInput = () => {
         </>
     }
 
-    return <Segment>
-        <Input
-            onChange={onMessageChange}
-            fluid={true}
-            name="message"
-            value={messageState}
-            label={createActionButtons()}
-            labelPosition="right"
-        />
-    </Segment>
+    return (<>
+            <Segment>
+                <Input
+                    onChange={onMessageChange}
+                    fluid={true}
+                    name="message"
+                    value={messageState}
+                    label={createActionButtons()}
+                    labelPosition="right"
+                />
+            </Segment>
+        </>
+    );
 }
 
 export default MessageInput;

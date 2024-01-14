@@ -3,9 +3,7 @@ package com.example.demo.models;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "channels")
@@ -23,14 +21,14 @@ public class Channel {
     private Boolean visible;
 
     @ManyToMany
-    private Set<Message> messages = new HashSet<>();
+    private List<Message> messages = new LinkedList<>();
 
     @JsonIgnore
     @ManyToOne
     private Workspace workspace;
 
     @ManyToMany
-    private Set<User> users = new LinkedHashSet<>();
+    private Set<User> users = new HashSet<>();
 
     public Channel(){
 
@@ -89,11 +87,11 @@ public class Channel {
         this.workspace = workspace;
     }
 
-    public Set<Message> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Set<Message> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 }

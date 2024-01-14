@@ -74,7 +74,7 @@ public class MessageService {
         messageRepository.delete(message);
     }
 
-    public Set<Message> getAllMessagesInChannel(Long channelID) throws Exception {
+    public List<Message> getAllMessagesInChannel(Long channelID) throws Exception {
         Channel channel = channelRepository.findById(channelID)
                 .orElseThrow(() -> new Exception("Channel doesn't exist"));
         return channel.getMessages();
