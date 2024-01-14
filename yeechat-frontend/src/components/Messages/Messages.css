@@ -1,0 +1,20 @@
+.messagecontent{
+    height: 500px;
+    overflow-y: scroll;
+}
+
+.messages{
+    padding-top : 10px;
+}
+
+#message-container div:nth-child(odd) {
+    color: dimgrey;
+    /* add other styles */
+}
+
+#message-container div:nth-child(even) {
+    color: black;
+    font-size: 24px;
+    padding-bottom: 10px;
+    /* add other styles */
+}
