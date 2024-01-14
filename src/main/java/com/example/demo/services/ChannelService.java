@@ -2,6 +2,7 @@ package com.example.demo.services;
 
 import com.example.demo.dtos.ChannelDto;
 import com.example.demo.models.Channel;
+import com.example.demo.models.Message;
 import com.example.demo.models.User;
 import com.example.demo.models.Workspace;
 import com.example.demo.repositories.ChannelRepository;
@@ -96,5 +97,7 @@ public class ChannelService {
         workspaceRepository.save(workspace);
         return newChannel;
     }
+
+
 
 }

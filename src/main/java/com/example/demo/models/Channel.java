@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Entity
@@ -29,7 +30,7 @@ public class Channel {
     private Workspace workspace;
 
     @ManyToMany
-    private Set<User> users = new HashSet<>();
+    private Set<User> users = new LinkedHashSet<>();
 
     public Channel(){
 
