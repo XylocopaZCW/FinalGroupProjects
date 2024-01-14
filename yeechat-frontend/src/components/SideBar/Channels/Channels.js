@@ -51,11 +51,6 @@ const Channels = (props) => {
         displayChannels();
     }, []);
 
-    const goToMessages = (event) => {
-        event.preventDefault();
-        window.location = '/message'
-    }
-
     const onSubmit = (event) => {
         event.preventDefault();
 
@@ -92,6 +87,49 @@ const Channels = (props) => {
         });
     }
 
+    const handleChannelClick = (channelId) => {
+        console.log(`Redirect to channel ${channelId}`);
+        displayMessages(channelId);
+    };
+
+    const displayMessages = (channelId) => {
+        const dataContainer = document.getElementById('message-container');
+        dataContainer.innerHTML = '';
+
+        fetch(`http://localhost:8080/api/messages/channel/${channelId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                const dataContainer = document.getElementById('message-container');
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    const itemElement2 = document.createElement('div')
+
+                    const formattedDate = new Date(item.date).toLocaleString('en-US', {
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit',
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit'
+                    });
+
+                    itemElement.textContent = `${formattedDate.replace(/\//g, '-')} ${sessionStorage.getItem('username') ?? "Sudo Kode"}`;
+                    itemElement2.textContent = `${item.body}`
+                    dataContainer.appendChild(itemElement);
+                    dataContainer.appendChild(itemElement2);
+                });
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
+    }
 
     return <> <Menu.Menu style={{ marginTop: '20px' }}>
         <Menu.Item style={{fontSize : '17px'}}>
@@ -101,18 +139,13 @@ const Channels = (props) => {
             ({channels.length})
         </Menu.Item>
         {channels.map(channel => (
-            <Menu.Item key={channel.channelId}>
+            <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId)}>
                 {channel.channelName}
             </Menu.Item>
         ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
                 <Icon name="add" /> New Channel
-            </span>
-        </Menu.Item>
-        <Menu.Item>
-            <span className="clickable" onClick={goToMessages} >
-                <Icon name="mail" /> Send Message
             </span>
         </Menu.Item>
     </Menu.Menu>

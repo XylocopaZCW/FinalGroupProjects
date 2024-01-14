@@ -26,8 +26,8 @@ public class Message {
     @ManyToOne
     private User user;
 
-     @ManyToMany
-     private Set<Channel> channels = new HashSet<>();
+     @ManyToOne
+     private Channel channel;
 
 
 
@@ -66,10 +66,6 @@ public class Message {
     public void setUser(User user) {
         this.user = user;
     }
-     public Set<Channel> getChannels() {
-         return this.channels;
-     }
-     public void setChannels(Set<Channel> channels) {
-         this.channels = channels;
-     }
-}
+    public Channel getChannel() {return channel;}
+    public void setChannel(Channel channel) {this.channel = channel;}
+    }

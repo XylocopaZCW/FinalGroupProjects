@@ -7,7 +7,6 @@ import reportWebVitals from './reportWebVitals';
 import {BrowserRouter as Router, Routes, Route, Navigate} from "react-router-dom";
 import SignUp from "./components/signup/SignUp";
 import SignIn from "./components/signin/SignIn";
-import Messages from "./components/messages/Messages";
 
 const ProtectedRoute = ({ children }) => {
     if (!sessionStorage.getItem("userId")) {
@@ -24,7 +23,6 @@ root.render(
             <Routes>
                 <Route path="/signup" element={<SignUp />} />
                 <Route path="/signin" element={<SignIn />} />
-                <Route path="/message" component={SignIn} element={<Messages />}/>
                 <Route
                     path="/"
                     element={

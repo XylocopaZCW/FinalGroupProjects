@@ -26,5 +26,4 @@ public class MessageTest {
         assertEquals(Date.valueOf("2024-01-07"), message.getDate());
         assertEquals(user, message.getUser());
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.demo.controllers;
 
 import com.example.demo.dtos.MessageDto;
+import com.example.demo.models.Channel;
 import com.example.demo.models.Message;
 import com.example.demo.services.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +26,33 @@ public class MessageController {
         this.messageService = messageService;
     }
 
-    @PostMapping("/sendMessage/{userID}")
-    public ResponseEntity<?> sendMessage(@PathVariable Long userID, @RequestBody MessageDto messageDto) throws Exception {
-        Message newMessage = messageService.sendMessage(messageDto, userID);
+    @PostMapping("/sendMessage/{userId}")
+    public ResponseEntity<?> sendMessage(@PathVariable Long userId, @RequestBody MessageDto messageDto) throws Exception {
+        Message newMessage = messageService.sendMessage(messageDto, userId);
         return new ResponseEntity<>(newMessage, HttpStatus.OK);
     }
 
-    @PostMapping("/sendMessage/{userID}/{channelID}")
-    public ResponseEntity<?> sendMessageToChannel(@PathVariable Long userID, @PathVariable Long channelID, @RequestBody MessageDto messageDto) throws Exception {
-        Message newMessage = messageService.sendMessage(messageDto, userID);
+    @PostMapping("/sendMessage/{userId}/{channelId}")
+    public ResponseEntity<?> sendMessageToChannel(@PathVariable Long userId, @PathVariable Long channelId, @RequestBody MessageDto messageDto) throws Exception {
+        Message newMessage = messageService.sendMessageToChannel(messageDto, userId, channelId);
         return new ResponseEntity<>(newMessage, HttpStatus.OK);
     }
 
-     @GetMapping("/{messageID}")
-     public ResponseEntity<?> getMessageById(@PathVariable  Long messageID) throws Exception {
-        Message message = messageService.getMessageById(messageID);
+    @GetMapping("channel/{channelId}")
+    public ResponseEntity<?> getAllMessagesInChannel(@PathVariable Long channelId) throws Exception {
+        return new ResponseEntity<>(messageService.getAllMessagesInChannel(channelId), HttpStatus.OK);
+    }
+
+     @GetMapping("/{messageId}")
+     public ResponseEntity<?> getMessageById(@PathVariable  Long messageId) throws Exception {
+        Message message = messageService.getMessageById(messageId);
         return new ResponseEntity<>(message, HttpStatus.OK);
-
     }
 
-    @PutMapping("/{messageID}")
-    public ResponseEntity<?> editMessage(@PathVariable Long messageID, @RequestBody MessageDto messageDto) throws Exception{
-            Message message = messageService.editMessage(messageID, messageDto);
+    @PutMapping("/{messageId}")
+    public ResponseEntity<?> editMessage(@PathVariable Long messageId, @RequestBody MessageDto messageDto) throws Exception{
+            Message message = messageService.editMessage(messageId, messageDto);
             return new ResponseEntity<>(message, HttpStatus.OK);
-
     }
 
     @GetMapping("/getAllMessages")
@@ -70,5 +74,4 @@ public class MessageController {
             return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
 }
