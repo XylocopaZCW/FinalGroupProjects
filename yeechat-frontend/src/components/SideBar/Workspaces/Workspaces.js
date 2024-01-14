@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Workspaces.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import { getWorkspacesForUser, createWorkspaceByUser } from "../../../api/workspaceApi";
+import { BsPersonWorkspace } from "react-icons/bs";
+
 
 const Workspaces = () => {
     const [workspaces, setWorkspaces] = useState([]);
@@ -18,9 +20,11 @@ const Workspaces = () => {
     }, [userId]);
 
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
-        <Menu.Item style={{fontSize : '20px'}}>
+        <Menu.Item style={{fontSize : '18px'}}>
             <span>
-                <Icon name="exchange" /> Workspaces
+                {/*<Icon name="exchange" /> Workspaces*/}
+               <BsPersonWorkspace /> Workspace
+
             </span>
             ({workspaces.length})
         </Menu.Item>
