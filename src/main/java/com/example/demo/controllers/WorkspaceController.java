@@ -71,4 +71,14 @@ public class WorkspaceController {
     public ResponseEntity<?> addChannelToWorkspace(@PathVariable Long workspaceId, @PathVariable Long channelId) throws Exception {
         return new ResponseEntity<>(workspaceService.addChannelToWorkspace(workspaceId, channelId), HttpStatus.OK);
     }
+
+    @GetMapping("users/{userId}")
+    public ResponseEntity<?> getWorkspacesForUser(@PathVariable Long userId) throws Exception {
+        return new ResponseEntity<>(workspaceService.getWorkspacesForUser(userId), HttpStatus.OK);
+    }
+
+    @PostMapping("users/{userId}")
+    public ResponseEntity<?> createWorkspaceByUser(@PathVariable Long userId, WorkspaceDto workspaceDto) throws Exception {
+        return new ResponseEntity<>(workspaceService.createWorkspaceByUser(userId, workspaceDto), HttpStatus.CREATED);
+    }
 }

@@ -11,12 +11,12 @@ public class WorkspaceTest {
     public void workspaceSettersAndGettersTest() {
         Workspace workspace = new Workspace();
         workspace.setWorkspaceId(1L);
-        workspace.setName("Test");
+        workspace.setWorkspaceName("Test");
         workspace.setAccessible(true);
         workspace.setVisible(true);
 
         assertEquals(1L, workspace.getWorkspaceId());
-        assertEquals("Test", workspace.getName());
+        assertEquals("Test", workspace.getWorkspaceName());
         assertTrue(workspace.getAccessible());
         assertTrue(workspace.getVisible());
     }
