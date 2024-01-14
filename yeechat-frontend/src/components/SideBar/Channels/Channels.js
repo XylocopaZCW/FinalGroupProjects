@@ -93,7 +93,7 @@ const Channels = (props) => {
     }
 
 
-    return <> <Menu.Menu style={{ marginTop: '35px' }}>
+    return <> <Menu.Menu style={{ marginTop: '20px' }}>
         <Menu.Item style={{fontSize : '17px'}}>
             <span>
                 <Icon name="exchange" /> Channels
