@@ -14,7 +14,7 @@ public class Workspace {
     private Long workspaceId;
 
     @Column(name = "name", nullable = false, unique = true)
-    private String name;
+    private String workspaceName;
     @Column(name = "accessible", nullable = false)
     private Boolean accessible;
     @Column(name = "visible", nullable = false)
@@ -35,8 +35,8 @@ public class Workspace {
     public Workspace() {
     }
 
-    public Workspace(String name, Boolean accessible, Boolean visible) {
-        this.name = name;
+    public Workspace(String workspaceName, Boolean accessible, Boolean visible) {
+        this.workspaceName = workspaceName;
         this.accessible = accessible;
         this.visible = visible;
     }
@@ -49,12 +49,12 @@ public class Workspace {
         this.workspaceId = workspaceId;
     }
 
-    public String getName() {
-        return name;
+    public String getWorkspaceName() {
+        return workspaceName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setWorkspaceName(String name) {
+        this.workspaceName = name;
     }
 
     public Boolean getAccessible() {

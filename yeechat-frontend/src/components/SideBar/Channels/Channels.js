@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
+import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/channelApi";
 
 const userId = sessionStorage.getItem('userId');
 // TODO: Un-hardcode me pls!
@@ -21,20 +22,7 @@ const Channels = (props) => {
     }
 
     const displayChannels = () => {
-        const workspaceId = 1;
-
-        fetch(`http://localhost:8080/api/workspaces/${workspaceId}/channels`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                return response.json();
-            })
+        getChannelsFromWorkspace(workspaceId)
             .then(data => {
                 console.log('Raw API data:', data);
                 if (Array.isArray(data)) {
@@ -45,7 +33,17 @@ const Channels = (props) => {
                 }
             })
             .catch((error) => {
-                console.error('Fetch error:', error);
+                console.error('Error fetching channels:', error);
+            });
+    }
+
+    const refreshChannels = () => {
+        getChannelsFromWorkspace(workspaceId)
+            .then(data => {
+                setChannels(data);
+            })
+            .catch((error) => {
+                console.error('Error fetching channels:', error);
             });
     }
 
@@ -75,22 +73,16 @@ const Channels = (props) => {
 
         console.log("Submitting channel:", channel);
 
-        fetch(`http://localhost:8080/api/channels/workspaces/${workspaceId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(channel)
-        })
-            .then(response => response.json())
+        createChannelInWorkspace(workspaceId, channel)
             .then(data => {
                 console.log('Success:', data);
                 closeModal();
+                refreshChannels();
             })
             .catch((error) => {
                 console.error('Error:', error);
             });
-    }
+    };
 
 
     const handleInput = (e) => {
@@ -101,7 +93,7 @@ const Channels = (props) => {
     }
 
 
-    return <> <Menu.Menu style={{ marginTop: '35px' }}>
+    return <> <Menu.Menu style={{ marginTop: '20px' }}>
         <Menu.Item style={{fontSize : '17px'}}>
             <span>
                 <Icon name="exchange" /> Channels

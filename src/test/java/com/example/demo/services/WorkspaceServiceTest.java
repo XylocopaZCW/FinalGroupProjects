@@ -70,7 +70,7 @@ public class WorkspaceServiceTest {
     @Test
     public void updateWorkspaceTest() throws Exception {
         Workspace original = new Workspace();
-        original.setName("Original");
+        original.setWorkspaceName("Original");
         original.setAccessible(false);
         original.setVisible(false);
         original.setWorkspaceId(1L);
@@ -84,7 +84,7 @@ public class WorkspaceServiceTest {
         Workspace actual = workspaceService.updateWorkspace(1L, updated);
 
         assertNotNull(actual);
-        assertEquals("New", actual.getName());
+        assertEquals("New", actual.getWorkspaceName());
         assertTrue(actual.getAccessible());
         assertTrue(actual.getVisible());
     }
