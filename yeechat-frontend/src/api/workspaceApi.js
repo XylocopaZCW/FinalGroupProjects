@@ -19,6 +19,26 @@ export function getWorkspacesForUser(userId) {
         });
 }
 
-// CREATE WORKSPACE
+export function createWorkspaceByUser(userId, workspaceData) {
+    return fetch(`${API_BASE_URL}/workspaces/users/${userId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(workspaceData)
+    })
+        .then(response => {
+            if (response.status !== 201) {
+                return response.json().then(data => {
+                    throw new Error(`Server error: ${data.message || response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .catch((error) => {
+            console.error('Error creating workspace:', error);
+            throw error;
+        });
+}
 
 // ADD USER TO WORKSPACE

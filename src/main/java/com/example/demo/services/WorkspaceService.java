@@ -10,6 +10,7 @@ import com.example.demo.repositories.WorkspaceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -107,5 +108,27 @@ public class WorkspaceService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User doesn't exist"));
         return user.getWorkspaces();
+    }
+
+    public Workspace createWorkspaceByUser(Long userId, WorkspaceDto workspaceDto) throws Exception {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new Exception("User doesn't exist"));
+        Workspace newWorkspace = new Workspace();
+        newWorkspace.setWorkspaceName(workspaceDto.getName());
+        newWorkspace.setAccessible(workspaceDto.getAccessible());
+        newWorkspace.setVisible(workspaceDto.getVisible());
+        newWorkspace.setAdmin(user);
+        Channel general = new Channel("general", true, true);
+        Set<User> users = new HashSet<>();
+        users.add(user);
+        general.setUsers(users);
+        Set<Channel> channels = new HashSet<>();
+        channels.add(general);
+        newWorkspace.setChannels(channels);
+        user.getWorkspaces().add(newWorkspace);
+        channelRepository.save(general);
+        workspaceRepository.save(newWorkspace);
+        userRepository.save(user);
+        return newWorkspace;
     }
 }

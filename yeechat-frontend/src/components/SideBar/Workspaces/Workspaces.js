@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './Workspaces.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
-import { getWorkspacesForUser } from "../../../api/workspaceApi";
+import { getWorkspacesForUser, createWorkspaceByUser } from "../../../api/workspaceApi";
 
 const Workspaces = () => {
     const [workspaces, setWorkspaces] = useState([]);
