@@ -5,7 +5,6 @@ import com.example.demo.models.Channel;
 import com.example.demo.models.User;
 import com.example.demo.repositories.ChannelRepository;
 import com.example.demo.repositories.UserRepository;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -53,7 +52,7 @@ public class ChannelServiceTest {
     @Test
     public void updateChannelTest() throws Exception {
         Channel original = new Channel();
-        original.setChannelname("Orginal");
+        original.setChannelName("Orginal");
         original.setAccessible(false);
         original.setVisible(false);
         original.setChannelId(1L);
@@ -67,7 +66,7 @@ public class ChannelServiceTest {
         Channel actual = channelService.updateChannel(1L, updated);
 
         assertNotNull((actual));
-        assertEquals("New", actual.getChannelname());
+        assertEquals("New", actual.getChannelName());
         assertTrue(actual.getAccessible());
         assertTrue(actual.getVisible());
     }
