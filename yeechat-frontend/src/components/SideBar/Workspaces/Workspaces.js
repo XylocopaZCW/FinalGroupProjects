@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './Workspaces.css';
 import { Menu, Icon, Dropdown, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import { getWorkspacesForUser, createWorkspaceByUser } from "../../../api/workspaceApi";
+import { BsPersonWorkspace } from "react-icons/bs";
+
 
 const Workspaces = () => {
     const [workspaces, setWorkspaces] = useState([]);
@@ -51,11 +53,20 @@ const Workspaces = () => {
             });
     };
 
+    const handleWorkspaceSelect = workspaceId => {
+        sessionStorage.setItem('workspaceId', workspaceId);
+        sessionStorage.setItem('workspaceName', workspaceAddState.workspaceName)
+        console.log(sessionStorage.getItem('workspaceId'))
+        console.log(sessionStorage.getItem('workspaceName'))
+        const event = new Event('workspaceSelect');
+        window.dispatchEvent(event);
+    };
+
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
-        <Dropdown item text='Workspaces' style={{fontSize : '20px'}}>
+        <Dropdown item text='Workspace' style={{fontSize : '20px'}}>
             <Dropdown.Menu>
                 {workspaces.map(workspace => (
-                    <Dropdown.Item key={workspace.workspaceId}>
+                    <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId)}>
                         {workspace.workspaceName}
                     </Dropdown.Item>
                 ))}
@@ -92,7 +103,6 @@ const Workspaces = () => {
             </Modal.Content>
         </Modal>
     </>
-    ;
 };
 
 export default Workspaces;

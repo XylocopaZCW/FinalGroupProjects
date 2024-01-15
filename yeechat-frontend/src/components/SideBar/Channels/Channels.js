@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/channelApi";
+// import { GrChannel } from "react-icons/gr";
+import { FaCaretDown } from "react-icons/fa";
+import { MdAddToHomeScreen } from "react-icons/md";
 
 const userId = sessionStorage.getItem('userId');
-// TODO: Un-hardcode me pls!
-const workspaceId = 1;
+// const workspaceId = sessionStorage.getItem('workspaceId');
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
@@ -13,36 +15,11 @@ const Channels = (props) => {
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
 
-    // useEffect(()=>{
-    //     channelIsRef.on('child_added', (snap) => {
-    //         setChannels((currentState)=>{
-    //             let updatedState = [...currentState];
-    //             updatedState.push(snap.val());
-    //             return updatedState;
-    //         })
-    //     })
-    // },[])
+    const openModal = () => { setModalOpenState(true); }
+    const closeModal = () => { setModalOpenState(false); }
 
-    const openModal = () => {
-        setModalOpenState(true);
-    }
-
-    const closeModal = () => {
-        setModalOpenState(false);
-    }
-
-    // const displayChannels1 = () => {
-    //     if (channels.length > 0) {
-    //         return channels.map((channel)=>{
-    //             return <Menu.Item
-    //             key ={channel.id}
-    //             name={channel.name}>
-    //
-    //             </Menu.Item>
-    //         })
-    //     }
-    // }
     const displayChannels = () => {
+        const workspaceId = sessionStorage.getItem('workspaceId')
         getChannelsFromWorkspace(workspaceId)
             .then(data => {
                 console.log('Raw API data:', data);
@@ -58,8 +35,22 @@ const Channels = (props) => {
             });
     }
 
+    useEffect(() => {
+        const handleWorkspaceChange = () => {
+            refreshChannels();
+        };
+
+        window.addEventListener('workspaceSelect', handleWorkspaceChange);
+        refreshChannels();
+
+        return () => {
+            window.removeEventListener('workspaceSelect', handleWorkspaceChange);
+        };
+    }, []);
+
     const refreshChannels = () => {
-        getChannelsFromWorkspace(workspaceId)
+        const updatedWorkspaceId = sessionStorage.getItem('workspaceId'); // Retrieve the updated workspaceId
+        getChannelsFromWorkspace(updatedWorkspaceId)
             .then(data => {
                 setChannels(data);
             })
@@ -74,6 +65,7 @@ const Channels = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        const workspaceId = sessionStorage.getItem('workspaceId');
 
         if (!channelAddState.channelName) {
             console.log("Form is not valid");
@@ -110,6 +102,7 @@ const Channels = (props) => {
 
     const handleChannelClick = (channelId) => {
         console.log(`Redirect to channel ${channelId}`);
+        sessionStorage.setItem('channelId', channelId)
         displayMessages(channelId);
     };
 
@@ -153,13 +146,14 @@ const Channels = (props) => {
     }
 
     return <> <Menu.Menu style={{ marginTop: '20px' }}>
-        <Menu.Item style={{fontSize : '17px'}}>
+        <Menu.Item style={{fontSize : '18px'}}>
             <span>
-                <Icon name="exchange" /> Channels
+                {/*<Icon name="exchange" /> Channels*/}
+                {/*<GrChannel /> Channels*/}
+                <FaCaretDown /> Channels
             </span>
             ({channels.length})
         </Menu.Item>
-        {/*{displayChannels1()}*/}
         {channels.map(channel => (
             <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId)}>
                 {channel.channelName}
@@ -167,7 +161,8 @@ const Channels = (props) => {
         ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
-                <Icon name="add" /> New Channel
+                {/*<Icon name="add" /> New Channel*/}
+                <MdAddToHomeScreen/> New Channel
             </span>
         </Menu.Item>
     </Menu.Menu>
