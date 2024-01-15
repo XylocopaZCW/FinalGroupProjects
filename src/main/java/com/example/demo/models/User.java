@@ -1,9 +1,9 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -23,17 +23,17 @@ public class User {
     @Column(name = "password", nullable = false)
     private String password;
 
-    // TODO: un-comment out as the entities become available
-
-//    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonBackReference
     @ManyToMany
     private Set<Workspace> workspaces = new HashSet<>();
 
+    @JsonBackReference
     @ManyToMany
     private Set<Channel> channels = new HashSet<>();
 
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private Set<Message> messages = new HashSet<>();
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private Set<Message> messages = new HashSet<>();
 
     public User() {
     }
@@ -76,8 +76,6 @@ public class User {
         this.password = password;
     }
 
-    // TODO: un-comment out as the entities become available
-
     public Set<Workspace> getWorkspaces() {
         return workspaces;
     }
@@ -90,11 +88,15 @@ public class User {
         return channels;
     }
 
-//    public Set<Message> getMessages() {
-//        return messages;
-//    }
-//
-//    public void setMessages(Set<Message> messages) {
-//        this.messages = messages;
-//    }
+    public void setChannels(Set<Channel> channels) {
+        this.channels = channels;
+    }
+
+    public Set<Message> getMessages() {
+        return messages;
+    }
+
+    public void setMessages(Set<Message> messages) {
+        this.messages = messages;
+    }
 }
