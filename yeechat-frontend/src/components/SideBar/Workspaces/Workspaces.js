@@ -53,13 +53,15 @@ const Workspaces = () => {
 
     const handleWorkspaceSelect = workspaceId => {
         sessionStorage.setItem('workspaceId', workspaceId);
+        sessionStorage.setItem('workspaceName', workspaceAddState.workspaceName)
         console.log(sessionStorage.getItem('workspaceId'))
+        console.log(sessionStorage.getItem('workspaceName'))
         const event = new Event('workspaceSelect');
         window.dispatchEvent(event);
     };
 
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
-        <Dropdown item text='Workspaces' style={{fontSize : '20px'}}>
+        <Dropdown item text='Workspace' style={{fontSize : '20px'}}>
             <Dropdown.Menu>
                 {workspaces.map(workspace => (
                     <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId)}>

@@ -99,6 +99,7 @@ const Channels = (props) => {
 
     const handleChannelClick = (channelId) => {
         console.log(`Redirect to channel ${channelId}`);
+        sessionStorage.setItem('channelId', channelId)
         displayMessages(channelId);
     };
 

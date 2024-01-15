@@ -7,7 +7,7 @@ const MessageInput = () => {
 
     const [fileDialogState, setFileDialog] = useState(false);
 
-    const channelId = 12;
+    const channelId = sessionStorage.getItem('channelId');
 
     const sendMessage = (e) => {
         const userId = sessionStorage.getItem("userId") ?? "1"
