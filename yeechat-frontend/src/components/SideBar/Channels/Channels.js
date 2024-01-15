@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import './Channels.css';
 import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/channelApi";
+// import { GrChannel } from "react-icons/gr";
+import { FaCaretDown } from "react-icons/fa";
+import { MdAddToHomeScreen } from "react-icons/md";
 
 const userId = sessionStorage.getItem('userId');
 // const workspaceId = sessionStorage.getItem('workspaceId');
@@ -143,9 +146,11 @@ const Channels = (props) => {
     }
 
     return <> <Menu.Menu style={{ marginTop: '20px' }}>
-        <Menu.Item style={{fontSize : '17px'}}>
+        <Menu.Item style={{fontSize : '18px'}}>
             <span>
-                <Icon name="exchange" /> Channels
+                {/*<Icon name="exchange" /> Channels*/}
+                {/*<GrChannel /> Channels*/}
+                <FaCaretDown /> Channels
             </span>
             ({channels.length})
         </Menu.Item>
@@ -156,7 +161,8 @@ const Channels = (props) => {
         ))}
         <Menu.Item>
             <span className="clickable" onClick={openModal} >
-                <Icon name="add" /> New Channel
+                {/*<Icon name="add" /> New Channel*/}
+                <MdAddToHomeScreen/> New Channel
             </span>
         </Menu.Item>
     </Menu.Menu>

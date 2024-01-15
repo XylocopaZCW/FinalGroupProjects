@@ -1,8 +1,11 @@
 import React from 'react';
 import { Grid, Header, Dropdown } from 'semantic-ui-react';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
+// import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+// import SentimentVerySatisfiedIcon from '@mui/icons-material/SentimentVerySatisfied';
 import "./UserInfo.css";
+import { TbEyeEdit } from "react-icons/tb";
+import { CgUserlane } from "react-icons/cg";
+
 
 const UserInfo = () => {
 
@@ -22,15 +25,18 @@ const UserInfo = () => {
         return (<Grid>
             <Grid.Column>
                 <Grid.Row className="userinfo_grid_row">
-                    <Header as="h2">
-                        <SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>
+                    <Header as="h1">
+                        {/*<SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>*/}
+                        <TbEyeEdit></TbEyeEdit>
                         <Header.Content>YeeChat</Header.Content>
                     </Header>
-                    <Header className="userinfo_displayname" as="h4">
+                    <Header className="userinfo_displayname" as="h3">
                         <Dropdown
                             trigger={
                                 <span>
-                                        <AccountCircleIcon></AccountCircleIcon>
+                                        {/*<AccountCircleIcon></AccountCircleIcon>*/}
+                                        <CgUserlane></CgUserlane>
+
                                     {sessionStorage.getItem('username')}
                                     </span>
                             }
