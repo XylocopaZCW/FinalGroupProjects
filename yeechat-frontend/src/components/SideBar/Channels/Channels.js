@@ -4,7 +4,7 @@ import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/channelApi";
 
 const userId = sessionStorage.getItem('userId');
-const workspaceId = sessionStorage.getItem('workspaceId');
+// const workspaceId = sessionStorage.getItem('workspaceId');
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
@@ -16,6 +16,7 @@ const Channels = (props) => {
     const closeModal = () => { setModalOpenState(false); }
 
     const displayChannels = () => {
+        const workspaceId = sessionStorage.getItem('workspaceId')
         getChannelsFromWorkspace(workspaceId)
             .then(data => {
                 console.log('Raw API data:', data);
@@ -33,21 +34,20 @@ const Channels = (props) => {
 
     useEffect(() => {
         const handleWorkspaceChange = () => {
-            const newWorkspaceId = sessionStorage.getItem('workspaceId');
-            if (newWorkspaceId !== workspaceId) {
-                refreshChannels();
-            }
+            refreshChannels();
         };
 
         window.addEventListener('workspaceSelect', handleWorkspaceChange);
-        displayChannels();
+        refreshChannels();
+
         return () => {
             window.removeEventListener('workspaceSelect', handleWorkspaceChange);
         };
     }, []);
 
     const refreshChannels = () => {
-        getChannelsFromWorkspace(workspaceId)
+        const updatedWorkspaceId = sessionStorage.getItem('workspaceId'); // Retrieve the updated workspaceId
+        getChannelsFromWorkspace(updatedWorkspaceId)
             .then(data => {
                 setChannels(data);
             })
@@ -62,6 +62,7 @@ const Channels = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        const workspaceId = sessionStorage.getItem('workspaceId');
 
         if (!channelAddState.channelName) {
             console.log("Form is not valid");
