@@ -1,6 +1,8 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.*;
@@ -13,20 +15,22 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long channelId;
 
-    @Column(name = "channelname", nullable = false, unique = true)
+    @Column(name = "channelname", nullable = false)
     private String channelName;
     @Column(name = "accessible", nullable = false)
     private Boolean accessible;
     @Column(name = "visible", nullable = false)
     private Boolean visible;
 
+    @JsonManagedReference
     @ManyToMany
     private List<Message> messages = new LinkedList<>();
 
-    @JsonIgnore
+    @JsonBackReference
     @ManyToOne
     private Workspace workspace;
 
+    @JsonManagedReference
     @ManyToMany
     private Set<User> users = new HashSet<>();
 

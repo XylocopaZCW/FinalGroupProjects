@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.HashSet;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
     
@@ -23,9 +24,11 @@ public class Message {
     @Column(name = "date", nullable = false)
     private Date date;
 
+    @JsonBackReference
     @ManyToOne
     private User user;
 
+    @JsonBackReference
      @ManyToOne
      private Channel channel;
 

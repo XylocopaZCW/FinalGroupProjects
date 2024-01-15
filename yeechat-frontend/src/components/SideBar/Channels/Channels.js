@@ -13,6 +13,16 @@ const Channels = (props) => {
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
 
+    // useEffect(()=>{
+    //     channelIsRef.on('child_added', (snap) => {
+    //         setChannels((currentState)=>{
+    //             let updatedState = [...currentState];
+    //             updatedState.push(snap.val());
+    //             return updatedState;
+    //         })
+    //     })
+    // },[])
+
     const openModal = () => {
         setModalOpenState(true);
     }
@@ -21,6 +31,17 @@ const Channels = (props) => {
         setModalOpenState(false);
     }
 
+    // const displayChannels1 = () => {
+    //     if (channels.length > 0) {
+    //         return channels.map((channel)=>{
+    //             return <Menu.Item
+    //             key ={channel.id}
+    //             name={channel.name}>
+    //
+    //             </Menu.Item>
+    //         })
+    //     }
+    // }
     const displayChannels = () => {
         getChannelsFromWorkspace(workspaceId)
             .then(data => {
@@ -138,6 +159,7 @@ const Channels = (props) => {
             </span>
             ({channels.length})
         </Menu.Item>
+        {/*{displayChannels1()}*/}
         {channels.map(channel => (
             <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId)}>
                 {channel.channelName}
