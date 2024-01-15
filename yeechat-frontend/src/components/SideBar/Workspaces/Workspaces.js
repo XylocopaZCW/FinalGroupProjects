@@ -7,6 +7,7 @@ import { BsPersonWorkspace } from "react-icons/bs";
 
 const Workspaces = () => {
     const [workspaces, setWorkspaces] = useState([]);
+    const [selectedWorkspaceName, setSelectedWorkspaceName] = useState('Workspaces'); // Default name
     const [modalOpen, setModalOpen] = useState(false);
     const userId = sessionStorage.getItem('userId');
     const [workspaceAddState, setWorkspaceAddState] = useState({ workspaceName: '' });
@@ -47,15 +48,19 @@ const Workspaces = () => {
                 closeModal();
                 return getWorkspacesForUser(userId);
             })
-            .then(setWorkspaces)
+            .then(data => {
+                setWorkspaces(data);
+                setSelectedWorkspaceName(workspaceAddState.workspaceName)
+            })
             .catch(error => {
                 console.error('Error creating workspace:', error);
             });
     };
 
-    const handleWorkspaceSelect = workspaceId => {
+    const handleWorkspaceSelect = (workspaceId, workspaceName) => {
         sessionStorage.setItem('workspaceId', workspaceId);
-        sessionStorage.setItem('workspaceName', workspaceAddState.workspaceName)
+        sessionStorage.setItem('workspaceName', workspaceName)
+        setSelectedWorkspaceName(workspaceName);
         console.log(sessionStorage.getItem('workspaceId'))
         console.log(sessionStorage.getItem('workspaceName'))
         const event = new Event('workspaceSelect');
@@ -63,10 +68,10 @@ const Workspaces = () => {
     };
 
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
-        <Dropdown item text='Workspace' style={{fontSize : '20px'}}>
+        <Dropdown item text={selectedWorkspaceName} style={{fontSize : '20px'}}>
             <Dropdown.Menu>
                 {workspaces.map(workspace => (
-                    <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId)}>
+                    <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId, workspace.workspaceName)}>
                         {workspace.workspaceName}
                     </Dropdown.Item>
                 ))}
