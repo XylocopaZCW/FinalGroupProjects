@@ -78,7 +78,7 @@ public class WorkspaceServiceTest {
         given(workspaceRepository.save(any(Workspace.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         WorkspaceDto updated = new WorkspaceDto();
-        updated.setName("New");
+        updated.setWorkspaceName("New");
         updated.setAccessible(true);
         updated.setVisible(true);
         Workspace actual = workspaceService.updateWorkspace(1L, updated);
