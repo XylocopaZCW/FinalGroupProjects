@@ -4,8 +4,7 @@ import { Menu, Icon, Modal, Button, Form, Segment } from 'semantic-ui-react';
 import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/channelApi";
 
 const userId = sessionStorage.getItem('userId');
-// TODO: Un-hardcode me pls!
-const workspaceId = 1;
+const workspaceId = sessionStorage.getItem('workspaceId');
 
 const Channels = (props) => {
     const [modalOpenState, setModalOpenState] = useState(false);
@@ -13,35 +12,9 @@ const Channels = (props) => {
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
 
-    // useEffect(()=>{
-    //     channelIsRef.on('child_added', (snap) => {
-    //         setChannels((currentState)=>{
-    //             let updatedState = [...currentState];
-    //             updatedState.push(snap.val());
-    //             return updatedState;
-    //         })
-    //     })
-    // },[])
+    const openModal = () => { setModalOpenState(true); }
+    const closeModal = () => { setModalOpenState(false); }
 
-    const openModal = () => {
-        setModalOpenState(true);
-    }
-
-    const closeModal = () => {
-        setModalOpenState(false);
-    }
-
-    // const displayChannels1 = () => {
-    //     if (channels.length > 0) {
-    //         return channels.map((channel)=>{
-    //             return <Menu.Item
-    //             key ={channel.id}
-    //             name={channel.name}>
-    //
-    //             </Menu.Item>
-    //         })
-    //     }
-    // }
     const displayChannels = () => {
         getChannelsFromWorkspace(workspaceId)
             .then(data => {
@@ -57,6 +30,21 @@ const Channels = (props) => {
                 console.error('Error fetching channels:', error);
             });
     }
+
+    useEffect(() => {
+        const handleWorkspaceChange = () => {
+            const newWorkspaceId = sessionStorage.getItem('workspaceId');
+            if (newWorkspaceId !== workspaceId) {
+                refreshChannels();
+            }
+        };
+
+        window.addEventListener('workspaceSelect', handleWorkspaceChange);
+        displayChannels();
+        return () => {
+            window.removeEventListener('workspaceSelect', handleWorkspaceChange);
+        };
+    }, []);
 
     const refreshChannels = () => {
         getChannelsFromWorkspace(workspaceId)
@@ -159,7 +147,6 @@ const Channels = (props) => {
             </span>
             ({channels.length})
         </Menu.Item>
-        {/*{displayChannels1()}*/}
         {channels.map(channel => (
             <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId)}>
                 {channel.channelName}

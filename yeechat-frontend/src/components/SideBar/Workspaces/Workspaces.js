@@ -51,11 +51,18 @@ const Workspaces = () => {
             });
     };
 
+    const handleWorkspaceSelect = workspaceId => {
+        sessionStorage.setItem('workspaceId', workspaceId);
+        console.log(sessionStorage.getItem('workspaceId'))
+        const event = new Event('workspaceSelect');
+        window.dispatchEvent(event);
+    };
+
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
         <Dropdown item text='Workspaces' style={{fontSize : '20px'}}>
             <Dropdown.Menu>
                 {workspaces.map(workspace => (
-                    <Dropdown.Item key={workspace.workspaceId}>
+                    <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId)}>
                         {workspace.workspaceName}
                     </Dropdown.Item>
                 ))}
@@ -92,7 +99,6 @@ const Workspaces = () => {
             </Modal.Content>
         </Modal>
     </>
-    ;
 };
 
 export default Workspaces;
