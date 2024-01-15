@@ -7,10 +7,10 @@ import com.example.demo.models.Workspace;
 import com.example.demo.repositories.ChannelRepository;
 import com.example.demo.repositories.UserRepository;
 import com.example.demo.repositories.WorkspaceRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -30,7 +30,7 @@ public class WorkspaceService {
 
     public Workspace createWorkspace(WorkspaceDto workspaceDto) {
         Workspace newWorkspace = new Workspace();
-        newWorkspace.setWorkspaceName(workspaceDto.getName());
+        newWorkspace.setWorkspaceName(workspaceDto.getWorkspaceName());
         newWorkspace.setAccessible(workspaceDto.getAccessible());
         newWorkspace.setVisible(workspaceDto.getVisible());
         return workspaceRepository.save(newWorkspace);
@@ -48,7 +48,7 @@ public class WorkspaceService {
     public Workspace updateWorkspace(Long workspaceId, WorkspaceDto workspaceDto) throws Exception {
         Workspace workspace = workspaceRepository.findById(workspaceId)
                 .orElseThrow(() -> new Exception("Workspace doesn't exist"));
-        workspace.setWorkspaceName(workspaceDto.getName());
+        workspace.setWorkspaceName(workspaceDto.getWorkspaceName());
         workspace.setAccessible(workspaceDto.getAccessible());
         workspace.setVisible(workspaceDto.getVisible());
         return workspaceRepository.save(workspace);
@@ -110,25 +110,29 @@ public class WorkspaceService {
         return user.getWorkspaces();
     }
 
+    @Transactional
     public Workspace createWorkspaceByUser(Long userId, WorkspaceDto workspaceDto) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new Exception("User doesn't exist"));
+
         Workspace newWorkspace = new Workspace();
-        newWorkspace.setWorkspaceName(workspaceDto.getName());
-        newWorkspace.setAccessible(workspaceDto.getAccessible());
-        newWorkspace.setVisible(workspaceDto.getVisible());
+        newWorkspace.setWorkspaceName(workspaceDto.getWorkspaceName());
+        newWorkspace.setAccessible(workspaceDto.getAccessible() != null ? workspaceDto.getAccessible() : true);
+        newWorkspace.setVisible(workspaceDto.getVisible() != null ? workspaceDto.getVisible() : true);
         newWorkspace.setAdmin(user);
-        Channel general = new Channel("general", true, true);
-        Set<User> users = new HashSet<>();
-        users.add(user);
-        general.setUsers(users);
-        Set<Channel> channels = new HashSet<>();
-        channels.add(general);
-        newWorkspace.setChannels(channels);
         user.getWorkspaces().add(newWorkspace);
-        channelRepository.save(general);
         workspaceRepository.save(newWorkspace);
+
+        Channel general = new Channel(workspaceDto.getWorkspaceName() + " General", true, true);
+        general.setWorkspace(newWorkspace);
+        newWorkspace.getChannels().add(general);
+
+        general.getUsers().add(user);
+
+        channelRepository.save(general);
+
         userRepository.save(user);
+
         return newWorkspace;
     }
 }

@@ -78,7 +78,7 @@ public class WorkspaceController {
     }
 
     @PostMapping("users/{userId}")
-    public ResponseEntity<?> createWorkspaceByUser(@PathVariable Long userId, WorkspaceDto workspaceDto) throws Exception {
+    public ResponseEntity<?> createWorkspaceByUser(@PathVariable Long userId, @RequestBody WorkspaceDto workspaceDto) throws Exception {
         return new ResponseEntity<>(workspaceService.createWorkspaceByUser(userId, workspaceDto), HttpStatus.CREATED);
     }
 }

@@ -1,5 +1,7 @@
 package com.example.demo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -24,13 +26,13 @@ public class Workspace {
     @ManyToOne
     private User admin;
 
-//    @ManyToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference
     @ManyToMany
     private Set<User> users = new HashSet<>();
 
-    @OneToMany
+    @JsonManagedReference
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
     private Set<Channel> channels = new HashSet<>();
-
 
     public Workspace() {
     }
