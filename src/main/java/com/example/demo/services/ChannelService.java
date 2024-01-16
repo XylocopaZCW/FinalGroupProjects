@@ -38,7 +38,7 @@ public class ChannelService {
 
 
     }
-    public List<Channel> getAllChannel(){
+    public List<Channel> getAllChannels(){
         return channelRepository.findAll();
 
 
@@ -46,6 +46,9 @@ public class ChannelService {
     public Channel updateChannel(Long channelId, ChannelDto channelDto) throws Exception {
         Channel channel = channelRepository.findById(channelId)
                 .orElseThrow(() -> new Exception("Channel doesn't exist"));
+        channel.setChannelName(channelDto.getChannelName());
+        channel.setAccessible(channelDto.getAccessibility());
+        channel.setVisible(channelDto.getVisible());
         return channelRepository.save(channel);
 
     }
@@ -97,7 +100,5 @@ public class ChannelService {
         workspaceRepository.save(workspace);
         return newChannel;
     }
-
-
 
 }

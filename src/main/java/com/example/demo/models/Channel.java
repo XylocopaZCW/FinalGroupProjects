@@ -15,7 +15,7 @@ public class Channel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long channelId;
 
-    @Column(name = "channelname", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String channelName;
     @Column(name = "accessible", nullable = false)
     private Boolean accessible;
@@ -28,6 +28,7 @@ public class Channel {
 
     @JsonBackReference
     @ManyToOne
+//    @JoinColumn(name = "workspaceId")
     private Workspace workspace;
 
     @JsonManagedReference
