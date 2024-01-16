@@ -6,51 +6,29 @@ import {getChannelsFromWorkspace, createChannelInWorkspace} from "../../../api/c
 import { FaCaretDown } from "react-icons/fa";
 import { MdAddToHomeScreen } from "react-icons/md";
 
-const userId = sessionStorage.getItem('userId');
-// TODO: Un-hardcode me pls!
-const workspaceId = 1;
-
-const Channels = (props) => {
+const Channels = () => {
     const [modalOpenState, setModalOpenState] = useState(false);
     const [channelAddState, setChannelAddState] = useState({ name: ''});
-    const [isLoadingState, setLoadingState] = useState(false);
+    const [isLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
+    const [channelMap, setChannelMap] = useState({});
 
-    // useEffect(()=>{
-    //     channelIsRef.on('child_added', (snap) => {
-    //         setChannels((currentState)=>{
-    //             let updatedState = [...currentState];
-    //             updatedState.push(snap.val());
-    //             return updatedState;
-    //         })
-    //     })
-    // },[])
+    const openModal = () => { setModalOpenState(true); }
+    const closeModal = () => { setModalOpenState(false); }
 
-    const openModal = () => {
-        setModalOpenState(true);
-    }
-
-    const closeModal = () => {
-        setModalOpenState(false);
-    }
-
-    // const displayChannels1 = () => {
-    //     if (channels.length > 0) {
-    //         return channels.map((channel)=>{
-    //             return <Menu.Item
-    //             key ={channel.id}
-    //             name={channel.name}>
-    //
-    //             </Menu.Item>
-    //         })
-    //     }
-    // }
     const displayChannels = () => {
+        const workspaceId = sessionStorage.getItem('workspaceId')
         getChannelsFromWorkspace(workspaceId)
             .then(data => {
                 console.log('Raw API data:', data);
                 if (Array.isArray(data)) {
                     setChannels(data);
+                    const map = {};
+                    data.forEach(channel => {
+                        map[channel.channelId] = channel.channelName;
+                    });
+                    sessionStorage.setItem('channelMap', JSON.stringify(map));
+                    setChannelMap(map);
                 } else {
                     console.log('Data is not an array:', data);
                     setChannels([]);
@@ -61,10 +39,30 @@ const Channels = (props) => {
             });
     }
 
+    useEffect(() => {
+        const handleWorkspaceChange = () => {
+            refreshChannels();
+        };
+
+        window.addEventListener('workspaceSelect', handleWorkspaceChange);
+        refreshChannels();
+
+        return () => {
+            window.removeEventListener('workspaceSelect', handleWorkspaceChange);
+        };
+    }, []);
+
     const refreshChannels = () => {
-        getChannelsFromWorkspace(workspaceId)
+        const updatedWorkspaceId = sessionStorage.getItem('workspaceId'); // Retrieve the updated workspaceId
+        getChannelsFromWorkspace(updatedWorkspaceId)
             .then(data => {
                 setChannels(data);
+                const map = {};
+                data.forEach(channel => {
+                    map[channel.channelId] = channel.channelName;
+                });
+                sessionStorage.setItem('channelMap', JSON.stringify(map));
+                setChannelMap(map);
             })
             .catch((error) => {
                 console.error('Error fetching channels:', error);
@@ -77,6 +75,7 @@ const Channels = (props) => {
 
     const onSubmit = (event) => {
         event.preventDefault();
+        const workspaceId = sessionStorage.getItem('workspaceId');
 
         if (!channelAddState.channelName) {
             console.log("Form is not valid");
@@ -111,8 +110,10 @@ const Channels = (props) => {
         });
     }
 
-    const handleChannelClick = (channelId) => {
-        console.log(`Redirect to channel ${channelId}`);
+    const handleChannelClick = (channelId, channelName) => {
+        console.log(`Redirect to channel (${channelId}) ${channelName}`);
+        sessionStorage.setItem('channelId', channelId);
+        sessionStorage.setItem('channelName', channelName);
         displayMessages(channelId);
     };
 
@@ -164,9 +165,8 @@ const Channels = (props) => {
             </span>
             ({channels.length})
         </Menu.Item>
-        {/*{displayChannels1()}*/}
         {channels.map(channel => (
-            <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId)}>
+            <Menu.Item key={channel.channelId} onClick={() => handleChannelClick(channel.channelId, channel.channelName)}>
                 {channel.channelName}
             </Menu.Item>
         ))}
