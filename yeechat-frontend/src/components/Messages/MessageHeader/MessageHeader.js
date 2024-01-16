@@ -28,7 +28,7 @@ const MessageHeader = (props) => {
     const channelMap = channelMapString ? JSON.parse(channelMapString) : {};
 
     return <Segment clearing>
-        <Header floated="left" fluid="true" as="h2">
+        <Header floated="left" fluid="true" as="h2"  style={{fontSize : '2.2rem'}}>
             <span>
                 {(props.isPrivateChat ? "@ " : "# ") + channelMap[sessionStorage.getItem('channelId')]}
                 {!props.isPrivateChat && <Icon
@@ -36,7 +36,7 @@ const MessageHeader = (props) => {
                     name={props.starred ? "star" : "star outline"}
                     color={props.starred ? "yellow" : "black"} />}
             </span>
-            <Header.Subheader> {props.uniqueUsers} User{props.uniqueUsers === 1 ? "" : "s"}</Header.Subheader>
+            <Header.Subheader  style={{fontSize : '1.4rem'}}> {props.uniqueUsers} User{props.uniqueUsers === 1 ? "" : "s"}</Header.Subheader>
         </Header>
         {/*<Header floated="right">*/}
         {/*    <Input*/}

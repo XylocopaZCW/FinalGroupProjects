@@ -41,8 +41,9 @@ const Messages = (props) => {
     return <div className="messages"><MessageHeader isPrivateChat={props.channel?.isPrivateChat} channelName={channelMap[sessionStorage.getItem('channelId')]} uniqueUsers={uniqueusersCount()} />
         <Segment className="messagecontent">
             <Comment.Group>
-                <div id="message-container" align="left"></div>
-                {displayMessages()}
+                {/*Timestamp*/}
+                <div id="message-container" align="left" style={{fontSize : '1.4rem'}}></div>
+                    {displayMessages()}
                 <div ref={currentEl => divRef = currentEl}></div>
             </Comment.Group>
         </Segment>
