@@ -14,6 +14,7 @@ const Channels = (props) => {
     const [channelAddState, setChannelAddState] = useState({ name: ''});
     const [isLoadingState, setLoadingState] = useState(false);
     const [channels, setChannels] = useState([]);
+    const [channelMap, setChannelMap] = useState({});
 
     const openModal = () => { setModalOpenState(true); }
     const closeModal = () => { setModalOpenState(false); }
@@ -25,6 +26,12 @@ const Channels = (props) => {
                 console.log('Raw API data:', data);
                 if (Array.isArray(data)) {
                     setChannels(data);
+                    const map = {};
+                    data.forEach(channel => {
+                        map[channel.channelId] = channel.channelName;
+                    });
+                    sessionStorage.setItem('channelMap', JSON.stringify(map));
+                    setChannelMap(map);
                 } else {
                     console.log('Data is not an array:', data);
                     setChannels([]);
@@ -53,6 +60,12 @@ const Channels = (props) => {
         getChannelsFromWorkspace(updatedWorkspaceId)
             .then(data => {
                 setChannels(data);
+                const map = {};
+                data.forEach(channel => {
+                    map[channel.channelId] = channel.channelName;
+                });
+                sessionStorage.setItem('channelMap', JSON.stringify(map));
+                setChannelMap(map);
             })
             .catch((error) => {
                 console.error('Error fetching channels:', error);

@@ -1,11 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Segment, Header, Input, Icon } from 'semantic-ui-react';
 
 const MessageHeader = (props) => {
+
+    const [channelName, setChannelName] = useState("");
+
+    const fetchChannelName = (channelId) => {
+        fetch(`http://localhost:8080/api/channels/${channelId}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                setChannelName(data.channelName)
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // TODO: Send an error message to the user
+            });
+    }
+
+    fetchChannelName(sessionStorage.getItem('channelId'));
+    const channelMapString = sessionStorage.getItem('channelMap');
+    const channelMap = channelMapString ? JSON.parse(channelMapString) : {};
+
     return <Segment clearing>
         <Header floated="left" fluid="true" as="h2">
             <span>
-                {(props.isPrivateChat ? "@ " : "# ") + props.channelName}
+                {(props.isPrivateChat ? "@ " : "# ") + channelMap[sessionStorage.getItem('channelId')]}
                 {!props.isPrivateChat && <Icon
                     onClick={props.starChange}
                     name={props.starred ? "star" : "star outline"}

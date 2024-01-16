@@ -35,7 +35,10 @@ const Messages = (props) => {
         return uniqueUsers.length;
     }
 
-    return <div className="messages"><MessageHeader isPrivateChat={props.channel?.isPrivateChat} channelName={props.channel?.name} uniqueUsers={uniqueusersCount()} />
+    const channelMapString = sessionStorage.getItem('channelMap');
+    const channelMap = channelMapString ? JSON.parse(channelMapString) : {};
+
+    return <div className="messages"><MessageHeader isPrivateChat={props.channel?.isPrivateChat} channelName={channelMap[sessionStorage.getItem('channelId')]} uniqueUsers={uniqueusersCount()} />
         <Segment className="messagecontent">
             <Comment.Group>
                 <div id="message-container" align="left"></div>
