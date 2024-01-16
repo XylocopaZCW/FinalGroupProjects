@@ -115,6 +115,8 @@ const Channels = () => {
         sessionStorage.setItem('channelId', channelId);
         sessionStorage.setItem('channelName', channelName);
         displayMessages(channelId);
+        const event = new Event('channelSelect');
+        window.dispatchEvent(event);
     };
 
     const displayMessages = (channelId) => {

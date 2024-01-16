@@ -78,11 +78,11 @@ public class MessageService {
         Channel channel = channelRepository.findById(channelID)
                 .orElseThrow(() -> new Exception("Channel doesn't exist"));
         List<Message> channelMessages = channel.getMessages();
-//        if (channelMessages.get(0).getMessageId() > channelMessages.get(1).getMessageId()) {
-            return channelMessages;
-//        } else {
-//            return channel.getMessages();
-//        }
+        if (channelMessages.get(0).getMessageId() > channelMessages.get(1).getMessageId()) {
+            return channelMessages.reversed();
+        } else {
+            return channel.getMessages();
+        }
     }
 
 
