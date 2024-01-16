@@ -38,7 +38,7 @@ const Channels = () => {
                 console.error('Error fetching channels:', error);
             });
     }
-
+        // worksoace to update the channel
     useEffect(() => {
         const handleWorkspaceChange = () => {
             refreshChannels();

@@ -22,12 +22,8 @@ public class ChannelController {
 
     @PostMapping()
     public ResponseEntity<?> createChannel(@RequestBody ChannelDto channelDto) {
-        try {
-            Channel newchannel = channelService.createChannel(channelDto);
-            return new ResponseEntity<>(newchannel, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+            return new ResponseEntity<>(channelService.createChannel(channelDto), HttpStatus.CREATED);
+
     }
     @GetMapping("/{channelId}")
     public ResponseEntity<?> getChannelById(@PathVariable Long channelId) throws Exception {
@@ -36,7 +32,7 @@ public class ChannelController {
 
     @GetMapping()
     public ResponseEntity<?> getAllChannels() {
-        return new ResponseEntity<>(channelService.getAllChannel(), HttpStatus.OK);
+        return new ResponseEntity<>(channelService.getAllChannels(), HttpStatus.OK);
     }
 
     @PutMapping("/{channelId}")
