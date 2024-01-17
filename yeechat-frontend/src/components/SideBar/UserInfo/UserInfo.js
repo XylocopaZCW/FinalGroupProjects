@@ -28,12 +28,12 @@ const UserInfo = () => {
                     <Header as="h1">
                         {/*<SentimentVerySatisfiedIcon></SentimentVerySatisfiedIcon>*/}
                         <TbEyeEdit></TbEyeEdit>
-                        <Header.Content>YeeChat</Header.Content>
+                        <Header.Content style={{fontSize : '3rem'}}>YeeChat</Header.Content>
                     </Header>
                     <Header className="userinfo_displayname" as="h3">
                         <Dropdown
                             trigger={
-                                <span>
+                                <span style={{fontSize : '1.6rem'}}>
                                         {/*<AccountCircleIcon></AccountCircleIcon>*/}
                                         <CgUserlane></CgUserlane>
 

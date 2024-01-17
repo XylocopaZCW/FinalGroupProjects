@@ -102,6 +102,7 @@ const MessageInput = () => {
                     value={messageState}
                     label={createActionButtons()}
                     labelPosition="right"
+                    size={"huge"}
                 />
             </Segment>
         </>

@@ -22,7 +22,7 @@ import Channels from "./Channels/Channels";
 
 export const SideBar = () => {
     return (
-        <Menu vertical fixed="left" borderless size="large" className="side_bar">
+        <Menu vertical fixed="left" borderless size="massive" className="side_bar">
             <UserInfo/>
             <hr/>
             <Workspaces/>

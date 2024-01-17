@@ -68,7 +68,7 @@ const Workspaces = () => {
     };
 
     return <> <Menu.Menu style={{ marginTop: '13px' }}>
-        <Dropdown item text={selectedWorkspaceName} style={{fontSize : '20px'}}>
+        <Dropdown item text={selectedWorkspaceName} style={{fontSize : '2rem'}}>
             <Dropdown.Menu>
                 {workspaces.map(workspace => (
                     <Dropdown.Item key={workspace.workspaceId} onClick={() => handleWorkspaceSelect(workspace.workspaceId, workspace.workspaceName)}>
@@ -84,7 +84,7 @@ const Workspaces = () => {
     </Menu.Menu>
 
         <Modal open={modalOpen} onClose={closeModal}>
-            <Modal.Header>
+            <Modal.Header style={{fontSize : '2rem'}}>
                 Create Workspace
             </Modal.Header>
             <Modal.Content>

@@ -4,7 +4,11 @@
 }
 
 .messages{
-    padding-top : 10px;
+    padding-top : 60px;
+    position: absolute;
+    float: right;
+    width: 100%;
+    padding-left: 100px;
 }
 
 #message-container div:nth-child(odd) {
