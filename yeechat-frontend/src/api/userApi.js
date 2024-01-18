@@ -1,5 +1,5 @@
 // userApi.js
-const API_BASE_URL = 'http://localhost:8080/api';
+const API_BASE_URL = 'https://yeechat.zipcode.rocks:8084/api';
 
 export function registerUser(userData) {
     const { username, email, password } = userData;
