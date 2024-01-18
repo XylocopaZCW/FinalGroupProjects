@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://yeechat.zipcode.rocks:8084/api';
+const API_BASE_URL = 'http://localhost:8080/api';
 
 export function getWorkspacesForUser(userId) {
     return fetch(`${API_BASE_URL}/workspaces/users/${userId}`, {
