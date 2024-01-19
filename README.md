@@ -26,4 +26,6 @@ YeeChat* will operate on a Spring Boot backend, React frontend, and Postgres dat
 
 ### **Dev Team**
 
-Nathan Guardado, Louie Casula, Gowri Palaniswamy
+Nathan Guardado https://github.com/NathanG741/FinalGroupProjects
+Louie Casula https://github.com/louiecasula/FinalGroupProjects
+Gowri Palaniswamy https://github.com/PGowri/FinalGroupProjects
