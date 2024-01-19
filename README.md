@@ -6,6 +6,10 @@
 
 ### **About**
 
+<p align="center">
+  <img width="1415" alt="Screen Shot 2024-01-19 at 10 25 41 AM" src="https://github.com/louiecasula/FinalGroupProjects/assets/121182711/0a222e88-7afa-4b34-9547-3c1aaa10527b">
+</p>
+
 XylocopaChat (YeeChat) is a web application that allows users to create an account, create a new workspace, view default and accessible channels where they will see messages live as they are received, and even send direct messages to other users. There will also be admins, who will be able to create new channels and remove users from channels. 
 
 Our MVP allows users to create an account, create a new workspace, view default and accessible channels where they will see messages live as they are received, and send direct messages to other users. There will also be admins, who will be able to create new channels and remove users from channels.
@@ -14,7 +18,11 @@ Our MVP allows users to create an account, create a new workspace, view default 
 
 ### **Future Plans**
 
-TBD
+- Navbar with spaces to add other users as a contact, DM inbox, and searchbar.
+- Private channels with a module to invite other users to it.
+- Ability to delete and update workspaces, channels, and messages.
+- Docker containerization to allow for real-time user interaction.
+- Multimedia support in message component (images, voice notes, other attachments).
 
 <hr>
 
@@ -26,4 +34,22 @@ YeeChat* will operate on a Spring Boot backend, React frontend, and Postgres dat
 
 ### **Dev Team**
 
-Nathan Guardado, Louie Casula, Gowri Palaniswamy
+<table>
+  <tr>
+    <td align="center">
+      <img src="https://github.com/louiecasula/FinalGroupProjects/assets/121182711/8ade6439-de11-4471-97f0-aab8b3a70a57" alt="Nathan Guardado" width="2000px"/><br />
+      <b>Nathan Guardado</b><br />
+      <a href= "https://github.com/NathanG741">NathanG741</a>
+    </td>
+    <td align="center">
+      <img src="https://github.com/louiecasula/FinalGroupProjects/assets/121182711/dae078f5-bcb9-44cc-a344-ee6acb7f696f" alt="Louie Casula" width="2000px"/><br />
+      <b>Louie Casula</b><br />
+      <a href="https://github.com/louiecasula">louiecasula</a>
+    </td>
+    <td align="center">
+      <img src="https://github.com/louiecasula/FinalGroupProjects/assets/121182711/0f24deea-f8c6-4467-9c31-5e0552ed1541" alt="Gowri Palaniswamy" width="2000px"/><br />
+      <b>Gowri Palaniswamy</b><br />
+      <a href="https://github.com/PGowri">PGowri</a>
+    </td>
+  </tr>
+</table>
